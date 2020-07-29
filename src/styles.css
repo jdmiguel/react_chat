@@ -1,4 +1,4 @@
-html, body, header, button,  div, h1, h2, h3, i {
+html, body, header, main, footer, div, h1, h2, h3, p, button, i {
   margin: 0;
   padding: 0;
 }
@@ -9,30 +9,36 @@ html {
   font-weight: 400;
 }
 
-.app{
+body {
+  overflow: hidden;
+}
+
+.app {
   display: flex;
   flex-direction: column;
   height: auto;
+  position: relative;
 }
 
 header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 20px;
+  padding: 0 20px;
   background-color: #263F73;
   color: #e4e4e1;
+  height: 12vh;
+}
+
+header > div{
+  display: flex;
 }
 
 header button {
   display: none;
 }
 
-.header-profile{
-  display: flex;
-}
-
-.header-profile i{
+header i {
   font-size: 2.3rem;
   margin-right: 10px;
 }
@@ -51,8 +57,37 @@ h3 {
   font-size: 0.8rem;
 }
 
-@media only screen and (min-width: 769px) {
-  .app{
+main {
+  height: 76vh;
+}
+
+main > div {
+  padding: 20px;
+}
+
+footer {
+  border-top: 1px solid #BFBFBD;
+  height: 12vh;
+}
+
+footer > div {
+  padding: 10px;
+}
+
+@media only screen and (max-width: 767px) and (orientation: landscape) {
+  header {
+    height: 20vh;
+  }
+  main {
+    height: 60vh;
+  }
+  footer {
+    height: 20vh;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .app {
     width: 320px;
     height: 600px;
     position: fixed;
@@ -69,6 +104,8 @@ h3 {
 
   header {
     position: relative;
+    padding: 13px 20px;
+    height: auto;
   }
 
   header button {
@@ -83,5 +120,13 @@ h3 {
     border: none;
     cursor: pointer;
     outline: none;
+  }
+
+  main {
+    height: 470px;
+  }
+
+  footer {
+    height: 70px;
   }
 };

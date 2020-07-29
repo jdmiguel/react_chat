@@ -2,7 +2,11 @@ import React from 'react';
 
 const Main:React.FC = () => {
   return(
-    <p>Main</p>
+    <main>
+      <div>
+        <p>MAIN</p>
+      </div>
+    </main>
   )
 }
 

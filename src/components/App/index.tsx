@@ -1,6 +1,8 @@
 import React, { useReducer, Dispatch } from 'react';
 
 import Header from '../Header';
+import Main from '../Main';
+import Footer from '../Footer';
 
 type ClassesAction = { type: 'hide'} | { type: 'show' };
 
@@ -27,6 +29,8 @@ const App:React.FC = () => {
   return(
     <div className={appClasses.join(' ')}>
       <Header onClick={handleAppClasses}/>
+      <Main/>
+      <Footer/>
     </div>
   )
 }
