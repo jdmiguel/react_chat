@@ -1,8 +1,22 @@
 import React from 'react';
 
-const Message:React.FC = () => {
+type MessageProps = {
+  classesName: string[];
+};
+
+const Message:React.FC<MessageProps> = ({classesName}) => {
   return(
-    <p>Message</p>
+    <div className={classesName.join(' ')}>
+      <div className="message-content">
+        <p>Ok</p>
+        <i className="material-icons">
+          done_all
+        </i>
+      </div>
+      <div className="message-time">
+        <p>10:30 - September 30, 2020</p>
+      </div>
+    </div>
   )
 }
 

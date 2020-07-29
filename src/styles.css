@@ -7,11 +7,15 @@ html {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 400;
-  color: #717366;
 }
 
 body {
   overflow: hidden;
+  color: #25272F;
+  user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  -moz-user-select: none;
 }
 
 .app {
@@ -26,8 +30,8 @@ header {
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
-  background-color: #263F73;
-  color: #ffffff;
+  background-color: #34495E;
+  color: #E1E1E1;
   height: 12vh;
 }
 
@@ -49,7 +53,7 @@ header button {
 .header-profile i {
   font-size: 2.5rem;
   margin-right: 10px;
-  color: #8BA5D9;
+  color: #E1E1E1;
 }
 
 h1 {
@@ -59,23 +63,95 @@ h1 {
 
 h2 {
   font-size: 0.8rem;
-  color: #8BA5D9;
 }
 
 h3 {
   font-size: 0.8rem;
+  color: #5edfc3;
 }
 
 main {
   height: 76vh;
+  overflow: auto;
+}
+
+main::-webkit-scrollbar {
+  background-color: #E1E1E1;
+  width: 10px;
+  height: 10px;
+}
+
+main::-webkit-scrollbar-thumb {
+  background-color: #34495E;
+}
+
+main::-webkit-scrollbar-thumb:hover {
+  background-color: #34495E;
+}
+
+main::-webkit-scrollbar-thumb:active {
+  background-color: #34495E;
 }
 
 main > div {
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.message{
+  max-width: 80%;
+  background-color: #E1E1E1;
+  border-radius: 15px;
+  padding: 10px;
+  font-size: 1rem;
+  margin-bottom: 15px;
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+}
+
+.message i {
+  color: #2396c4;
+  align-self: flex-end;
+  font-size: 1.2rem;
+  margin-left: 5px;
+}
+
+.message i.check {
+
+}
+
+.message i.double-check {
+  
+}
+
+.message i.double-check-blue {
+  
+}
+
+.message-content{
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.message-time{
+  display: flex;
+  justify-content: flex-end;
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+
+
+.message.received{
+  align-self: flex-start;
+  background-color: #5edfc3;
+  color: #25272F;
 }
 
 footer {
-  background-color: #263F73;
+  background-color: #34495E;
   height: 12vh;
   display: flex;
 }
@@ -89,12 +165,12 @@ footer {
 }
 
 .footer-wrapper i{
-  color: #ffffff; 
+  color: #5edfc3; 
 }
 
 textarea {
-  background-color: #8BA5D9;
-  color: #263F73;
+  background-color: #E1E1E1;
+  color: #25272F;
   resize: none;
   width: 100%;
   height: 100%;
@@ -104,23 +180,30 @@ textarea {
   padding: 6px 8px;
   margin-right: 10px;
   font-family: 'Open Sans', sans-serif;
-  font-weight: 600;
 }
 
 ::-webkit-textarea-placeholder { 
-  color: #ffffff; 
+  color: #25272F;
+  opacity: 0.6;
+  font-weight: 400;
 }
 
 :-ms-textarea-placeholder { 
-  color: #ffffff; 
+  color: #25272F;
+  opacity: 0.6;
+  font-weight: 400;
 }
 
 ::-moz-textarea-placeholder { 
-  color: #ffffff;
+  color: #25272F;
+  opacity: 0.6;
+  font-weight: 400;
 }
 
 ::placeholder {
-  color: #ffffff;
+  color: #25272F;
+  opacity: 0.6;
+  font-weight: 400;
 }
 
 @media only screen and (max-width: 767px) and (orientation: landscape) {

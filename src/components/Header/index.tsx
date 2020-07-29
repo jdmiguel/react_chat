@@ -1,6 +1,6 @@
 import React from 'react';
 
-export type HeaderProps = {
+type HeaderProps = {
   onClick: () => void;
 };
 
