@@ -1,4 +1,4 @@
-html, body, header, main, footer, div, h1, h2, h3, p, button, i {
+html, body, header, main, footer, div, h1, h2, h3, p, button, i, textarea {
   margin: 0;
   padding: 0;
 }
@@ -7,6 +7,7 @@ html {
   font-family: 'Open Sans', sans-serif;
   font-size: 14px;
   font-weight: 400;
+  color: #717366;
 }
 
 body {
@@ -26,8 +27,15 @@ header {
   align-items: center;
   padding: 0 20px;
   background-color: #263F73;
-  color: #e4e4e1;
+  color: #ffffff;
   height: 12vh;
+}
+
+button{
+  background: none;
+  border: none;
+  cursor: pointer;
+  outline: none;
 }
 
 header button {
@@ -41,6 +49,7 @@ header button {
 .header-profile i {
   font-size: 2.5rem;
   margin-right: 10px;
+  color: #8BA5D9;
 }
 
 h1 {
@@ -50,7 +59,7 @@ h1 {
 
 h2 {
   font-size: 0.8rem;
-  font-weight: 400;
+  color: #8BA5D9;
 }
 
 h3 {
@@ -66,12 +75,52 @@ main > div {
 }
 
 footer {
-  border-top: 1px solid #BFBFBD;
+  background-color: #263F73;
   height: 12vh;
+  display: flex;
 }
 
-footer > div {
-  padding: 10px;
+.footer-wrapper {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 10px;
+}
+
+.footer-wrapper i{
+  color: #ffffff; 
+}
+
+textarea {
+  background-color: #8BA5D9;
+  color: #263F73;
+  resize: none;
+  width: 100%;
+  height: 100%;
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  padding: 6px 8px;
+  margin-right: 10px;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+}
+
+::-webkit-textarea-placeholder { 
+  color: #ffffff; 
+}
+
+:-ms-textarea-placeholder { 
+  color: #ffffff; 
+}
+
+::-moz-textarea-placeholder { 
+  color: #ffffff;
+}
+
+::placeholder {
+  color: #ffffff;
 }
 
 @media only screen and (max-width: 767px) and (orientation: landscape) {
@@ -89,7 +138,7 @@ footer > div {
 @media only screen and (min-width: 768px) {
   .app {
     width: 320px;
-    height: 600px;
+    height: 625px;
     position: fixed;
     bottom: 0;
     right: 25px;
@@ -99,7 +148,7 @@ footer > div {
   }
 
   .app.hide {
-    transform: translateY(542px);
+    transform: translateY(564px);
   }
 
   header {
@@ -116,17 +165,17 @@ footer > div {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background: none;
-    border: none;
-    cursor: pointer;
-    outline: none;
   }
 
   main {
-    height: 470px;
+    height: 469px;
   }
 
   footer {
-    height: 70px;
+    height: 95px;
+  }
+
+  footer button:hover{
+    opacity: 0.8;
   }
 };

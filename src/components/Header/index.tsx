@@ -9,7 +9,7 @@ const Header:React.FC<HeaderProps> = ({onClick}) => {
     <header>
       <button type="button" onClick={onClick}></button>
       <div className="header-profile">
-        <i data-testid={'label-icon'} className="material-icons">
+        <i className="material-icons">
           account_circle
         </i>
         <div>
