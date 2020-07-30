@@ -1,4 +1,5 @@
 import data from './data.json';
+import { IMessage } from './types';
 
 const months = [
   { value: 1, text: 'January' },
@@ -17,19 +18,16 @@ const months = [
 
 const factorDate = 8;
 
-export const getShowedMessages = (start: number, end: number) =>
-  data.slice(start, end);
-
-export const getClassesMessage = (type: string) =>
+const getClassesMessage = (type: string) =>
   `message ${type === 'in' ? 'incoming' : ''}`;
 
-export const getIconClassesMessage = (type: string, status: string) =>
+const getIconClassesMessage = (type: string, status: string) =>
   type === 'out' ? `material-icons ${status === 'read' ? 'read' : ''}` : '';
 
-export const getIconNameMessage = (type: string, status: string) =>
+const getIconNameMessage = (type: string, status: string) =>
   type === 'out' ? (status === 'sent' ? 'done' : 'done_all') : '';
 
-export const getTimeMessage = (id: number, timeStamp: string) => {
+const getTimeMessage = (id: number, timeStamp: string) => {
   const currentDate = Date.now();
   const selectedDate = new Date(currentDate - (parseInt(timeStamp) / id * factorDate));
 
@@ -41,4 +39,19 @@ export const getTimeMessage = (id: number, timeStamp: string) => {
 
   return `${hour}:${minutes} - ${month} ${day}, ${year}`;
 };
+
+export const getShowedMessages = (start: number, end: number) =>
+  data.slice(start, end);
+
+export const getFormattedMessages = (messages:IMessage[]) => 
+  messages.map((message) => ({
+    id: message.id,
+    text: decodeURIComponent(message.text),
+    messageClasses: getClassesMessage(message.direction).trimEnd(),
+    hasIcon: message.direction === 'out',
+    iconClasses: getIconClassesMessage(message.direction, message.status).trimEnd(),
+    iconName: getIconNameMessage(message.direction,message.status),
+    date: getTimeMessage(message.id, message.timestamp)
+  })
+);
 

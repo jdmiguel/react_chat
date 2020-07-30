@@ -4,7 +4,7 @@ import Header from '../Header';
 import Main from '../Main';
 import Footer from '../Footer';
 
-import { getShowedMessages, getClassesMessage, getIconClassesMessage, getIconNameMessage, getTimeMessage } from '../../helpers/utils';
+import { getShowedMessages, getFormattedMessages } from '../../helpers/utils';
 import { IShowedMessage } from '../../helpers/types';
 
 const initialAppClasses = ['app'];
@@ -13,28 +13,8 @@ enum initialShowedMessage {
   end = 10,
 };
 
-export interface IMessage {
-  id: number;
-  direction: string;
-  status: string;
-  timestamp: string;
-  text: string;
-}      
-
 interface AppClassesAction { type: 'hide' | 'show' };
 interface ShowedMessagesAction { type: 'add', messages: IShowedMessage[]};
-
-const getFormattedMessages = (messages:IMessage[]) => 
-  messages.map((message) => ({
-    id: message.id,
-    text: decodeURIComponent(message.text),
-    messageClasses: getClassesMessage(message.direction).trimEnd(),
-    hasIcon: message.direction === 'out',
-    iconClasses: getIconClassesMessage(message.direction, message.status).trimEnd(),
-    iconName: getIconNameMessage(message.direction,message.status),
-    date: getTimeMessage(message.id, message.timestamp)
-  })
-);
 
 const appClassesReducer = (classes: string[], action: AppClassesAction) => {
   switch (action.type) {
