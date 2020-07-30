@@ -1,6 +1,9 @@
 import data from './data.json';
 import { IMessage } from './types';
 
+export const totalMessages = data.length;
+
+// dates
 const months = [
   { value: 1, text: 'January' },
   { value: 2, text: 'February' },
@@ -15,15 +18,18 @@ const months = [
   { value: 11, text: 'November' },
   { value: 12, text: 'December' }
 ];
-
 const factorDate = 8;
 
+// app initial constants
 export const initialAppClasses = ['app'];
-
-export enum initialShowedMessage {
-  init = 0,
-  end = 10,
+export enum initialShowedMessageCounter {
+  STARTER = 0,
+  MAX_SHOWED = 20,
 };
+export const starterShowedMessage = 0;
+export const maxShowedMessage = 20;
+export const factorScroll = 1.2;
+
 
 export const getUnreadMessagesCounter = () => data.reduce((acc:number = 0, next:IMessage) => {
   if(next.direction === 'in' && next.status === 'received') {
@@ -54,8 +60,10 @@ const getTimeMessage = (id: number, timeStamp: string) => {
   return `${hour}:${minutes} - ${month} ${day}, ${year}`;
 };
 
-export const getShowedMessages = (start: number, end: number) =>
-  data.slice(start, end);
+export const getShowedMessages = (formattingFunction:any) => (start: number, end: number) => {
+  const messages = data.slice(start, end);
+  return formattingFunction(messages);
+}
 
 export const getFormattedMessages = (messages:IMessage[]) => 
   messages.map((message) => ({

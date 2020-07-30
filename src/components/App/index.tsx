@@ -1,62 +1,115 @@
-import React, { useReducer, Dispatch, useEffect, useState } from 'react';
+import React, {
+  useReducer,
+  Dispatch,
+  useEffect,
+  useState,
+  useCallback,
+} from 'react';
 
 import Header from '../Header';
 import Main from '../Main';
 import Footer from '../Footer';
 
-import { initialAppClasses, initialShowedMessage, getUnreadMessagesCounter, getShowedMessages, getFormattedMessages } from '../../helpers/utils';
+import {
+  totalMessages,
+  initialAppClasses,
+  initialShowedMessageCounter,
+  factorScroll,
+  getUnreadMessagesCounter,
+  getShowedMessages,
+  getFormattedMessages,
+} from '../../helpers/utils';
 import { IShowedMessage } from '../../helpers/types';
 
-interface AppClassesAction { type: 'hide' | 'show' };
-interface ShowedMessagesAction { type: 'add', messages: IShowedMessage[]};
+interface AppClassesAction {
+  type: 'hide' | 'show';
+}
+interface ShowedMessagesAction {
+  type: 'add';
+  messages: IShowedMessage[];
+}
 
 const appClassesReducer = (classes: string[], action: AppClassesAction) => {
   switch (action.type) {
     case 'hide':
-      return [...classes,'hide'];
+      return [...classes, 'hide'];
     case 'show':
-      return classes.filter(appClass => appClass !== 'hide');
+      return classes.filter((appClass) => appClass !== 'hide');
   }
 };
 
-const showedMessagesReducer = (messages: IShowedMessage[], action: ShowedMessagesAction) => {
+const showedMessagesReducer = (
+  messages: IShowedMessage[],
+  action: ShowedMessagesAction,
+) => {
   switch (action.type) {
     case 'add':
       return [...messages, ...action.messages];
   }
 };
 
-const App:React.FC = () => {
+const App: React.FC = () => {
+  // Reducers
   const [appClasses, appClassesDispatch]: [
     string[],
     Dispatch<AppClassesAction>,
   ] = useReducer(appClassesReducer, initialAppClasses);
-
-  const [unreadMessageCounter, setUnreadMessageCounter] = useState(getUnreadMessagesCounter());
 
   const [showedMessages, showedMessagesDispatch]: [
     IShowedMessage[],
     Dispatch<ShowedMessagesAction>,
   ] = useReducer(showedMessagesReducer, []);
 
+  // States
+  const [showedMessagesCounter, setShowedMessageCounter] = useState(
+    initialShowedMessageCounter.STARTER,
+  );
+  const [unreadMessageCounter, setUnreadMessageCounter] = useState(
+    getUnreadMessagesCounter(),
+  );
+  const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
+
   useEffect(() => {
-    const formatedMessages = getFormattedMessages(getShowedMessages(initialShowedMessage.init,initialShowedMessage.end));
+    setIsLoadingScroll(false);
+  }, [showedMessages]);
 
-    showedMessagesDispatch({type: 'add', messages: formatedMessages});
-  },[])
+  useEffect(() => {
+    const messages = getShowedMessages(getFormattedMessages);
+    const formatedMessages = messages(showedMessagesCounter, showedMessagesCounter + initialShowedMessageCounter.MAX_SHOWED);
 
+    showedMessagesDispatch({ type: 'add', messages: formatedMessages });
+  }, [showedMessagesCounter]);
 
-  const handleAppClasses = () => {
-    appClasses.includes('hide') ? appClassesDispatch({type: 'show'}) : appClassesDispatch({type: 'hide'})
-  }
+  const handleAppClasses = useCallback(() => {
+    appClasses.includes('hide')
+      ? appClassesDispatch({ type: 'show' })
+      : appClassesDispatch({ type: 'hide' });
+  }, [appClasses]);
 
-  return(
+  const handleScroll = useCallback(
+    (event: React.UIEvent) => {
+      const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+      const isScrollDownLimit = scrollTop >= (scrollHeight - clientHeight) / factorScroll;
+      const isRetrievingDataAllowed = showedMessagesCounter < totalMessages;
+
+      if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
+        setIsLoadingScroll(true);
+        setShowedMessageCounter(showedMessagesCounter + initialShowedMessageCounter.MAX_SHOWED);
+      }
+    },
+    [showedMessagesCounter, isLoadingOnScroll],
+  );
+
+  return (
     <div className={appClasses.join(' ')}>
-      <Header onClick={handleAppClasses} unreadMessagesCounter={unreadMessageCounter}/>
-      <Main showedMessages={showedMessages}/>
-      <Footer/>
+      <Header
+        onClick={handleAppClasses}
+        unreadMessagesCounter={unreadMessageCounter}
+      />
+      <Main onScroll={handleScroll} showedMessages={showedMessages} />
+      <Footer />
     </div>
-  )
-}
+  );
+};
 
 export default App;
