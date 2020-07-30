@@ -1,20 +1,24 @@
 import React from 'react';
 
-type MessageProps = {
-  classesName: string[];
+import { IShowedMessage } from '../../../helpers/types';
+
+interface IMessageProps {
+  data: IShowedMessage
 };
 
-const Message:React.FC<MessageProps> = ({classesName}) => {
+const Message:React.FC<IMessageProps> = ({ data: { text, messageClasses, hasIcon, iconClasses, iconName, date } }) => {
   return(
-    <div className={classesName.join(' ')}>
+    <div className={messageClasses}>
       <div className="message-content">
-        <p>Ok</p>
-        <i className="material-icons">
-          done_all
-        </i>
+        <p>{text}</p>
+        { hasIcon && 
+          <i className={iconClasses && iconClasses}>
+            {iconName && iconName}
+          </i>
+        }
       </div>
       <div className="message-time">
-        <p>10:30 - September 30, 2020</p>
+        <p>{date}</p>
       </div>
     </div>
   )

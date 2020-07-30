@@ -1,20 +1,22 @@
 import React from 'react';
 
-import Message from './Message'
+import Message from './Message';
 
-const Main:React.FC = () => {
+import { IShowedMessage } from '../../helpers/types';
+
+interface IMainProps {
+  showedMessages: IShowedMessage[]
+};
+
+const Main:React.FC<IMainProps> = ({showedMessages}) => {
   return(
     <main>
       <div>
-        <Message classesName={['message']}/>
-        <Message classesName={['message', 'received']}/>
-        <Message classesName={['message', 'received']}/>
-        <Message classesName={['message']}/>
-        <Message classesName={['message']}/>
-        <Message classesName={['message']}/>
-        <Message classesName={['message', 'received']}/>
-        <Message classesName={['message']}/>
-        <Message classesName={['message']}/>
+        {
+          showedMessages.map(showedMessage => (
+            <Message key={showedMessage.id} data={showedMessage} />
+          ))
+        }
       </div>
     </main>
   )

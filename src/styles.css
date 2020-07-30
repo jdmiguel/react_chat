@@ -105,22 +105,14 @@ main > div {
 }
 
 .message i {
-  color: #2396c4;
+  color: #25272F;
   align-self: flex-end;
   font-size: 1.2rem;
   margin-left: 5px;
 }
 
-.message i.check {
-
-}
-
-.message i.double-check {
-  
-}
-
-.message i.double-check-blue {
-  
+.message i.read {
+  color: #2396c4;
 }
 
 .message-content{
@@ -137,7 +129,7 @@ main > div {
 }
 
 
-.message.received{
+.message.incoming{
   align-self: flex-start;
   background-color: #5edfc3;
   color: #25272F;
