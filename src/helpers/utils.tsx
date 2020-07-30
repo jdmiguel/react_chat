@@ -18,6 +18,20 @@ const months = [
 
 const factorDate = 8;
 
+export const initialAppClasses = ['app'];
+
+export enum initialShowedMessage {
+  init = 0,
+  end = 10,
+};
+
+export const getUnreadMessagesCounter = () => data.reduce((acc:number = 0, next:IMessage) => {
+  if(next.direction === 'in' && next.status === 'received') {
+    acc++;
+  }
+  return acc;
+},0); 
+
 const getClassesMessage = (type: string) =>
   `message ${type === 'in' ? 'incoming' : ''}`;
 

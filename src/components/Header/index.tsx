@@ -2,9 +2,10 @@ import React from 'react';
 
 interface IHeaderProps {
   onClick: () => void;
+  unreadMessagesCounter: number
 };
 
-const Header:React.FC<IHeaderProps> = ({onClick}) => {
+const Header:React.FC<IHeaderProps> = ({onClick, unreadMessagesCounter}) => {
   return(
     <header>
       <button type="button" onClick={onClick}></button>
@@ -18,7 +19,7 @@ const Header:React.FC<IHeaderProps> = ({onClick}) => {
         </div>
       </div>
       <div>
-        <h3>150 new messages</h3>
+        <h3>{`${unreadMessagesCounter} new messages`}</h3>
       </div>
     </header>
   )

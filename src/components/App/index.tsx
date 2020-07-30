@@ -1,17 +1,11 @@
-import React, { useReducer, Dispatch, useEffect } from 'react';
+import React, { useReducer, Dispatch, useEffect, useState } from 'react';
 
 import Header from '../Header';
 import Main from '../Main';
 import Footer from '../Footer';
 
-import { getShowedMessages, getFormattedMessages } from '../../helpers/utils';
+import { initialAppClasses, initialShowedMessage, getUnreadMessagesCounter, getShowedMessages, getFormattedMessages } from '../../helpers/utils';
 import { IShowedMessage } from '../../helpers/types';
-
-const initialAppClasses = ['app'];
-enum initialShowedMessage {
-  init = 0,
-  end = 10,
-};
 
 interface AppClassesAction { type: 'hide' | 'show' };
 interface ShowedMessagesAction { type: 'add', messages: IShowedMessage[]};
@@ -38,6 +32,8 @@ const App:React.FC = () => {
     Dispatch<AppClassesAction>,
   ] = useReducer(appClassesReducer, initialAppClasses);
 
+  const [unreadMessageCounter, setUnreadMessageCounter] = useState(getUnreadMessagesCounter());
+
   const [showedMessages, showedMessagesDispatch]: [
     IShowedMessage[],
     Dispatch<ShowedMessagesAction>,
@@ -56,7 +52,7 @@ const App:React.FC = () => {
 
   return(
     <div className={appClasses.join(' ')}>
-      <Header onClick={handleAppClasses}/>
+      <Header onClick={handleAppClasses} unreadMessagesCounter={unreadMessageCounter}/>
       <Main showedMessages={showedMessages}/>
       <Footer/>
     </div>
