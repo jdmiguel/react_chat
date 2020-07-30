@@ -61,10 +61,10 @@ const App: React.FC = () => {
   ] = useReducer(showedMessagesReducer, []);
 
   // States
-  const [showedMessagesCounter, setShowedMessageCounter] = useState(
+  const [showedMessagesCounter, setShowedMessagesCounter] = useState(
     initialShowedMessageCounter.STARTER,
   );
-  const [unreadMessageCounter, setUnreadMessageCounter] = useState(
+  const [unreadMessagesCounter, setUnreadMessagesCounter] = useState(
     getUnreadMessagesCounter(),
   );
   const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
@@ -94,19 +94,24 @@ const App: React.FC = () => {
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         setIsLoadingScroll(true);
-        setShowedMessageCounter(showedMessagesCounter + initialShowedMessageCounter.MAX_SHOWED);
+        setShowedMessagesCounter(showedMessagesCounter + initialShowedMessageCounter.MAX_SHOWED);
       }
     },
     [showedMessagesCounter, isLoadingOnScroll],
   );
 
+  const handleOnUnreadMessages = (id:number) => {
+    setUnreadMessagesCounter( counter => counter - 1);
+    //updateUnreadMessage(id);
+  }
+
   return (
     <div className={appClasses.join(' ')}>
       <Header
         onClick={handleAppClasses}
-        unreadMessagesCounter={unreadMessageCounter}
+        unreadMessagesCounter={unreadMessagesCounter}
       />
-      <Main onScroll={handleScroll} showedMessages={showedMessages} />
+      <Main onScroll={handleScroll} showedMessages={showedMessages} onUnreadMessage={handleOnUnreadMessages}/>
       <Footer />
     </div>
   );

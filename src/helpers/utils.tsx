@@ -26,10 +26,7 @@ export enum initialShowedMessageCounter {
   STARTER = 0,
   MAX_SHOWED = 20,
 };
-export const starterShowedMessage = 0;
-export const maxShowedMessage = 20;
-export const factorScroll = 1.2;
-
+export const factorScroll = 1.1;
 
 export const getUnreadMessagesCounter = () => data.reduce((acc:number = 0, next:IMessage) => {
   if(next.direction === 'in' && next.status === 'received') {
@@ -38,8 +35,17 @@ export const getUnreadMessagesCounter = () => data.reduce((acc:number = 0, next:
   return acc;
 },0); 
 
+export const observerOptions = {
+  root: document.querySelector('main'),
+  rootMargin: '0px',
+  threshold: 1.0
+}
+
 const getClassesMessage = (type: string) =>
   `message ${type === 'in' ? 'incoming' : ''}`;
+
+const getIsUnread = (type: string, status: string) =>
+  !!(type === 'in' && status === 'received');  
 
 const getIconClassesMessage = (type: string, status: string) =>
   type === 'out' ? `material-icons ${status === 'read' ? 'read' : ''}` : '';
@@ -68,7 +74,8 @@ export const getShowedMessages = (formattingFunction:any) => (start: number, end
 export const getFormattedMessages = (messages:IMessage[]) => 
   messages.map((message) => ({
     id: message.id,
-    text: decodeURIComponent(message.text),
+    text: message.text,
+    isUnread: getIsUnread(message.direction, message.status),
     messageClasses: getClassesMessage(message.direction).trimEnd(),
     hasIcon: message.direction === 'out',
     iconClasses: getIconClassesMessage(message.direction, message.status).trimEnd(),
@@ -76,4 +83,16 @@ export const getFormattedMessages = (messages:IMessage[]) =>
     date: getTimeMessage(message.id, message.timestamp)
   })
 );
+
+/*
+export const updateUnreadMessage = (id:number) => {
+  const message = data.find(message => message.id === id);
+
+  console.log('updateUnreadMessage: ', id)
+
+  if(message) {
+    message.status = "read";
+    data[id] = message;
+  } 
+}*/
 

@@ -164,7 +164,7 @@
   {
       "id": 24,
       "direction": "in",
-      "status": "read",
+      "status": "received",
       "timestamp": "1577835979",
       "text": "the pleasure of"
   },

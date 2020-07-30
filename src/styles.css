@@ -206,7 +206,7 @@ textarea {
 @media only screen and (min-width: 768px) {
   .app {
     width: 320px;
-    height: 625px;
+    height: 650px;
     position: fixed;
     bottom: 0;
     right: 25px;
@@ -236,7 +236,7 @@ textarea {
   }
 
   main {
-    height: 469px;
+    height: 494px;
   }
 
   footer {

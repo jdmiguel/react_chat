@@ -5,17 +5,18 @@ import Message from './Message';
 import { IShowedMessage } from '../../helpers/types';
 
 interface IMainProps {
-  onScroll: (event: React.UIEvent) => void
+  onScroll: (event: React.UIEvent) => void,
+  onUnreadMessage: (id:number) => void,
   showedMessages: IShowedMessage[]
 };
 
-const Main:React.FC<IMainProps> = ({onScroll, showedMessages}) => {
+const Main:React.FC<IMainProps> = ({onScroll, showedMessages, onUnreadMessage}) => {
   return(
     <main onScroll={onScroll}>
       <div>
         {
           showedMessages.map(showedMessage => (
-            <Message key={showedMessage.id} data={showedMessage} />
+            <Message key={showedMessage.id} data={showedMessage} onUnreadMessage={onUnreadMessage}/>
           ))
         }
       </div>

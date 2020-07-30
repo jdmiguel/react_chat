@@ -9,6 +9,7 @@ export interface IMessage {
 export interface IShowedMessage {
   id: number;
   text: string;
+  isUnread: boolean;
   messageClasses: string;
   hasIcon: boolean;
   iconClasses: string;
