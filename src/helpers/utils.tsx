@@ -84,15 +84,3 @@ export const getFormattedMessages = (messages:IMessage[]) =>
   })
 );
 
-/*
-export const updateUnreadMessage = (id:number) => {
-  const message = data.find(message => message.id === id);
-
-  console.log('updateUnreadMessage: ', id)
-
-  if(message) {
-    message.status = "read";
-    data[id] = message;
-  } 
-}*/
-

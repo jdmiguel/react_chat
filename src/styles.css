@@ -5,7 +5,7 @@ html, body, header, main, footer, div, h1, h2, h3, p, button, i, textarea {
 
 html {
   font-family: 'Open Sans', sans-serif;
-  font-size: 14px;
+  font-size: 2.2vh;
   font-weight: 400;
 }
 
@@ -35,7 +35,7 @@ header {
   height: 12vh;
 }
 
-button{
+button {
   background: none;
   border: none;
   cursor: pointer;
@@ -92,7 +92,7 @@ main > div {
   flex-direction: column;
 }
 
-.message{
+.message {
   max-width: 80%;
   background-color: #E1E1E1;
   border-radius: 15px;
@@ -121,7 +121,7 @@ main > div {
   margin-bottom: 10px;
 }
 
-.message-time{
+.message-time {
   display: flex;
   justify-content: flex-end;
   opacity: 0.6;
@@ -129,7 +129,7 @@ main > div {
 }
 
 
-.message.incoming{
+.message.incoming {
   align-self: flex-start;
   background-color: #5edfc3;
   color: #25272F;
@@ -149,7 +149,7 @@ footer {
   padding: 20px 10px;
 }
 
-.footer-wrapper i{
+.footer-wrapper i {
   color: #5edfc3; 
 }
 
@@ -165,6 +165,7 @@ textarea {
   padding: 6px 8px;
   margin-right: 10px;
   font-family: 'Open Sans', sans-serif;
+  font-size: 2.2vh;
 }
 
 ::-webkit-textarea-placeholder { 
@@ -191,19 +192,29 @@ textarea {
   font-weight: 400;
 }
 
-@media only screen and (max-width: 767px) and (orientation: landscape) {
-  header {
-    height: 20vh;
+@media only screen and (max-width: 1199px) and (orientation: landscape) {
+  html, textarea {
+    font-size: 2.1vw;
   }
+  
+  header, footer {
+    height: 15vh;
+  }
+
   main {
-    height: 60vh;
+    height: 70vh;
   }
-  footer {
-    height: 20vh;
+
+  .footer-wrapper {
+    padding: 18px 10px;
   }
 }
 
-@media only screen and (min-width: 768px) {
+@media only screen and (min-width: 1200px) {
+  html {
+    font-size: 14px;
+  }
+  
   .app {
     width: 320px;
     height: 650px;
@@ -243,7 +254,11 @@ textarea {
     height: 95px;
   }
 
-  footer button:hover{
+  footer button:hover {
     opacity: 0.8;
+  }
+
+  textarea {
+    font-size: 1rem;
   }
 };

@@ -102,7 +102,6 @@ const App: React.FC = () => {
 
   const handleOnUnreadMessages = (id:number) => {
     setUnreadMessagesCounter( counter => counter - 1);
-    //updateUnreadMessage(id);
   }
 
   return (
