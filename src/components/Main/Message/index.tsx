@@ -9,27 +9,21 @@ interface IMessageProps {
 };
 
 const Message:React.FC<IMessageProps> = ({ data: { id, text, messageClasses, isUnread, hasIcon, iconClasses, iconName, date }, onUnreadMessage }) => {
-  const handleIntersect = (entries:IntersectionObserverEntry[]) => {
+  const messageRef = useRef<any>();
+
+  const handleIntersect = (entries:IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if(entries[0].intersectionRatio > 0.98 && isUnread) {
+      observer.unobserve(messageRef.current);
       onUnreadMessage(id);
     } 
   };
 
-  const messageRef = useRef<any>();
   const observerRef = useRef<IntersectionObserver>(new IntersectionObserver(handleIntersect, observerOptions));
  
   useEffect(() => {
-    const { current: currentObserver } = observerRef;
     const { current: currentMessage } = messageRef;
 
     currentMessage && observerRef.current.observe(currentMessage);
-
-    return () => {
-      if (currentMessage) {
-        currentObserver.unobserve(currentMessage);
-      }
-    };
-    
   }, []);
 
   return(

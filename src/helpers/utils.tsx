@@ -1,4 +1,4 @@
-import data from './data.json';
+import data from '../db.json';
 import { IMessage } from './types';
 
 export const totalMessages = data.length;
