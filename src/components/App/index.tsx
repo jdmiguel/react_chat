@@ -104,6 +104,14 @@ const App: React.FC = () => {
     setUnreadMessagesCounter( counter => counter - 1);
   }
 
+  const handleUserMessageChange = (event: React.ChangeEvent<any>) => {
+    console.log(event.target.value);
+  };
+
+  const handleUserMessageClick = () => {
+    console.log('handleUserMessageClick');
+  };
+
   return (
     <div className={appClasses.join(' ')}>
       <Header
@@ -111,7 +119,7 @@ const App: React.FC = () => {
         unreadMessagesCounter={unreadMessagesCounter}
       />
       <Main onScroll={handleScroll} showedMessages={showedMessages} onUnreadMessage={handleOnUnreadMessages}/>
-      <Footer />
+      <Footer onChange={handleUserMessageChange} onClick={handleUserMessageClick} />
     </div>
   );
 };

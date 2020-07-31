@@ -31,7 +31,7 @@ header {
   align-items: center;
   padding: 0 20px;
   background-color: #34495E;
-  color: #E1E1E1;
+  color: #eef3f3;
   height: 12vh;
 }
 
@@ -53,7 +53,7 @@ header button {
 .header-profile i {
   font-size: 2.5rem;
   margin-right: 10px;
-  color: #E1E1E1;
+  color: #eef3f3;
 }
 
 h1 {
@@ -66,17 +66,18 @@ h2 {
 }
 
 h3 {
-  font-size: 0.8rem;
+  font-size: 0.85rem;
   color: #5edfc3;
 }
 
 main {
   height: 76vh;
   overflow: auto;
+  background-color: #eef3f3; 
 }
 
 main::-webkit-scrollbar {
-  background-color: #E1E1E1;
+  background-color: #dddada;
   width: 10px;
   height: 10px;
 }
@@ -94,7 +95,7 @@ main > div {
 
 .message {
   max-width: 80%;
-  background-color: #E1E1E1;
+  background-color: #dddada;
   border-radius: 15px;
   padding: 10px;
   font-size: 1rem;
@@ -154,7 +155,7 @@ footer {
 }
 
 textarea {
-  background-color: #E1E1E1;
+  background-color: #eef3f3;
   color: #25272F;
   resize: none;
   width: 100%;
@@ -227,7 +228,7 @@ textarea {
   }
 
   .app.hide {
-    transform: translateY(564px);
+    transform: translateY(589px);
   }
 
   header {

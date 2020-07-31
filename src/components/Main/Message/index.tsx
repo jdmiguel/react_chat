@@ -4,8 +4,8 @@ import { observerOptions } from '../../../helpers/utils';
 import { IShowedMessage } from '../../../helpers/types';
 
 interface IMessageProps {
-  data: IShowedMessage,
-  onUnreadMessage: (id:number) => void
+  data: IShowedMessage;
+  onUnreadMessage: (id:number) => void;
 };
 
 const Message:React.FC<IMessageProps> = ({ data: { id, text, messageClasses, isUnread, hasIcon, iconClasses, iconName, date }, onUnreadMessage }) => {

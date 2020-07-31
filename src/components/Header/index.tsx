@@ -2,7 +2,7 @@ import React from 'react';
 
 interface IHeaderProps {
   onClick: () => void;
-  unreadMessagesCounter: number
+  unreadMessagesCounter: number;
 };
 
 const Header:React.FC<IHeaderProps> = ({onClick, unreadMessagesCounter}) => {
