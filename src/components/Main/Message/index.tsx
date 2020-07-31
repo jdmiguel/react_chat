@@ -8,7 +8,7 @@ interface IMessageProps {
   onUnreadMessage: () => void;
 };
 
-const Message:React.FC<IMessageProps> = ({ data: { id, text, messageClasses, isUnread, hasIcon, iconClasses, iconName, date }, onUnreadMessage }) => {
+const Message:React.FC<IMessageProps> = ({ data: { text, messageClasses, isUnread, hasIcon, iconClasses, iconName, date }, onUnreadMessage }) => {
   const messageRef = useRef<any>();
 
   const handleIntersect = (entries:IntersectionObserverEntry[], observer: IntersectionObserver) => {

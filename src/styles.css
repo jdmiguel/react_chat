@@ -233,7 +233,7 @@ textarea:focus {
   
   .app {
     width: 320px;
-    height: 650px;
+    height: 686px;
     position: fixed;
     bottom: 0;
     right: 25px;
@@ -243,7 +243,7 @@ textarea:focus {
   }
 
   .app.hide {
-    transform: translateY(589px);
+    transform: translateY(625px);
   }
 
   header {
@@ -263,7 +263,7 @@ textarea:focus {
   }
 
   main {
-    height: 494px;
+    height: 530px;
   }
 
   footer {

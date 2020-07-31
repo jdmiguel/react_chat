@@ -19,9 +19,9 @@ const months = [
 const factorDate = 8;
 
 // app initial constants
-export const initialtotalMessages = data.length;
-export const initialAppClasses = ['app'];
-export enum initialDisplayedMessageCounter {
+export const defaultTotalMessages = data.length;
+export const defaultAppClasses = ['app'];
+export enum defaultMessagesCounter {
   STARTER = 0,
   MAX_DISPLAYED = 20,
 };
@@ -52,18 +52,24 @@ const getIconClassesMessage = (type: string, status: string) =>
 const getIconNameMessage = (type: string, status: string) =>
   type === 'out' ? (status === 'sent' ? 'done' : 'done_all') : '';
 
-const getTimeMessage = (id: number, timeStamp: string) => {
-  const currentDate = Date.now();
-  const selectedDate = new Date(currentDate - (parseInt(timeStamp) / id * factorDate));
-
-  const hour = selectedDate.getHours() < 10 ? `0${selectedDate.getHours()}` : selectedDate.getHours();
-  const minutes = selectedDate.getMinutes();
-  const month = months.find(month => selectedDate.getMonth() === month.value)?.text;
-  const day = selectedDate.getDate();
-  const year = selectedDate.getFullYear();
+const getDate = (date: Date) => {
+  const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
+  const minutes = date.getMinutes();
+  const month = months.find(month => date.getMonth() === month.value)?.text;
+  const day = date.getDate();
+  const year = date.getFullYear();
 
   return `${hour}:${minutes} - ${month} ${day}, ${year}`;
+}  
+
+const getTimeMessage = (id: number, timeStamp: string) => {
+  const currentTimestamp = Date.now();
+  const selectedDate = new Date(currentTimestamp - (parseInt(timeStamp) / id * factorDate));
+
+  return getDate(selectedDate);
 };
+
+export const getTimeNewMessage = () => getDate(new Date());
 
 export const getDisplayedMessages = (formattingFunction:any) => (start: number, end: number) => {
   const messages = data.slice(start, end);
