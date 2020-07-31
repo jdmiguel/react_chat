@@ -1,11 +1,11 @@
 import React, { useRef, useEffect } from 'react';
 
 import { observerOptions } from '../../../helpers/utils';
-import { IShowedMessage } from '../../../helpers/types';
+import { IDisplayedMessage } from '../../../helpers/types';
 
 interface IMessageProps {
-  data: IShowedMessage;
-  onUnreadMessage: (id:number) => void;
+  data: IDisplayedMessage;
+  onUnreadMessage: () => void;
 };
 
 const Message:React.FC<IMessageProps> = ({ data: { id, text, messageClasses, isUnread, hasIcon, iconClasses, iconName, date }, onUnreadMessage }) => {
@@ -14,7 +14,7 @@ const Message:React.FC<IMessageProps> = ({ data: { id, text, messageClasses, isU
   const handleIntersect = (entries:IntersectionObserverEntry[], observer: IntersectionObserver) => {
     if(entries[0].intersectionRatio > 0.98 && isUnread) {
       observer.unobserve(messageRef.current);
-      onUnreadMessage(id);
+      onUnreadMessage();
     } 
   };
 

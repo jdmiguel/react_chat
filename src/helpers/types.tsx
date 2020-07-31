@@ -6,7 +6,7 @@ export interface IMessage {
   text: string;
 } 
 
-export interface IShowedMessage {
+export interface IDisplayedMessage {
   id: number;
   text: string;
   isUnread: boolean;

@@ -1,15 +1,17 @@
 import React from 'react';
 interface IFooterProps {
-  onChange: (event: React.ChangeEvent) => void;
-  onClick: () => void;
+  currentMessage: string;
+  onChangeMessage: (event: React.ChangeEvent) => void;
+  buttonClass: string;
+  onClickButton: () => void;
 };
 
-const Footer:React.FC<IFooterProps> = ({onChange, onClick}) => {
+const Footer:React.FC<IFooterProps> = ({currentMessage, onChangeMessage, buttonClass, onClickButton}) => {
   return(
     <footer>
       <div className="footer-wrapper">
-        <textarea placeholder="Send a message..." onChange={onChange}/>
-        <button type="button" onClick={onClick}>
+        <textarea value={currentMessage} placeholder="Send a message..." onChange={onChangeMessage}/>
+        <button className={buttonClass} type="button" onClick={onClickButton}>
           <i className="material-icons">
             send
           </i>

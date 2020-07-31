@@ -1,8 +1,6 @@
 import data from '../db.json';
 import { IMessage } from './types';
 
-export const totalMessages = data.length;
-
 // dates
 const months = [
   { value: 1, text: 'January' },
@@ -21,10 +19,11 @@ const months = [
 const factorDate = 8;
 
 // app initial constants
+export const initialtotalMessages = data.length;
 export const initialAppClasses = ['app'];
-export enum initialShowedMessageCounter {
+export enum initialDisplayedMessageCounter {
   STARTER = 0,
-  MAX_SHOWED = 20,
+  MAX_DISPLAYED = 20,
 };
 export const factorScroll = 1.1;
 
@@ -66,7 +65,7 @@ const getTimeMessage = (id: number, timeStamp: string) => {
   return `${hour}:${minutes} - ${month} ${day}, ${year}`;
 };
 
-export const getShowedMessages = (formattingFunction:any) => (start: number, end: number) => {
+export const getDisplayedMessages = (formattingFunction:any) => (start: number, end: number) => {
   const messages = data.slice(start, end);
   return formattingFunction(messages);
 }

@@ -11,22 +11,22 @@ import Main from '../Main';
 import Footer from '../Footer';
 
 import {
-  totalMessages,
+  initialtotalMessages,
   initialAppClasses,
-  initialShowedMessageCounter,
+  initialDisplayedMessageCounter,
   factorScroll,
   getUnreadMessagesCounter,
-  getShowedMessages,
+  getDisplayedMessages,
   getFormattedMessages,
 } from '../../helpers/utils';
-import { IShowedMessage } from '../../helpers/types';
+import { IDisplayedMessage } from '../../helpers/types';
 
 interface AppClassesAction {
   type: 'hide' | 'show';
 }
-interface ShowedMessagesAction {
+interface DisplayedMessagesAction {
   type: 'add';
-  messages: IShowedMessage[];
+  messages: IDisplayedMessage[];
 }
 
 const appClassesReducer = (classes: string[], action: AppClassesAction) => {
@@ -38,9 +38,9 @@ const appClassesReducer = (classes: string[], action: AppClassesAction) => {
   }
 };
 
-const showedMessagesReducer = (
-  messages: IShowedMessage[],
-  action: ShowedMessagesAction,
+const displayedMessagesReducer = (
+  messages: IDisplayedMessage[],
+  action: DisplayedMessagesAction,
 ) => {
   switch (action.type) {
     case 'add':
@@ -55,30 +55,33 @@ const App: React.FC = () => {
     Dispatch<AppClassesAction>,
   ] = useReducer(appClassesReducer, initialAppClasses);
 
-  const [showedMessages, showedMessagesDispatch]: [
-    IShowedMessage[],
-    Dispatch<ShowedMessagesAction>,
-  ] = useReducer(showedMessagesReducer, []);
+  const [displayedMessages, displayedMessagesDispatch]: [
+    IDisplayedMessage[],
+    Dispatch<DisplayedMessagesAction>,
+  ] = useReducer(displayedMessagesReducer, []);
 
   // States
-  const [showedMessagesCounter, setShowedMessagesCounter] = useState(
-    initialShowedMessageCounter.STARTER,
+  const [totalMessages, setTotalMessages] = useState(initialtotalMessages);
+  const [displayedMessagesCounter, setDisplayedMessagesCounter] = useState(
+    initialDisplayedMessageCounter.STARTER,
   );
   const [unreadMessagesCounter, setUnreadMessagesCounter] = useState(
     getUnreadMessagesCounter(),
   );
   const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
+  const [newMessage, setNewMessage] = useState('');
+  const [newMessageButtonClass, setNewMessageButtonClass] = useState('');
 
   useEffect(() => {
     setIsLoadingScroll(false);
-  }, [showedMessages]);
+  }, [displayedMessages]);
 
   useEffect(() => {
-    const messages = getShowedMessages(getFormattedMessages);
-    const formatedMessages = messages(showedMessagesCounter, showedMessagesCounter + initialShowedMessageCounter.MAX_SHOWED);
+    const messages = getDisplayedMessages(getFormattedMessages);
+    const formatedMessages = messages(displayedMessagesCounter, displayedMessagesCounter + initialDisplayedMessageCounter.MAX_DISPLAYED);
 
-    showedMessagesDispatch({ type: 'add', messages: formatedMessages });
-  }, [showedMessagesCounter]);
+    displayedMessagesDispatch({ type: 'add', messages: formatedMessages });
+  }, [displayedMessagesCounter]);
 
   const handleAppClasses = useCallback(() => {
     appClasses.includes('hide')
@@ -90,26 +93,32 @@ const App: React.FC = () => {
     (event: React.UIEvent) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
       const isScrollDownLimit = scrollTop >= (scrollHeight - clientHeight) / factorScroll;
-      const isRetrievingDataAllowed = showedMessagesCounter < totalMessages;
+      const isRetrievingDataAllowed = displayedMessagesCounter < initialtotalMessages;
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         setIsLoadingScroll(true);
-        setShowedMessagesCounter(showedMessagesCounter + initialShowedMessageCounter.MAX_SHOWED);
+        setDisplayedMessagesCounter(displayedMessagesCounter + initialDisplayedMessageCounter.MAX_DISPLAYED);
       }
     },
-    [showedMessagesCounter, isLoadingOnScroll],
+    [displayedMessagesCounter, isLoadingOnScroll],
   );
 
-  const handleOnUnreadMessages = (id:number) => {
+  const handleOnUnreadMessages = () => {
     setUnreadMessagesCounter( counter => counter - 1);
   }
 
   const handleUserMessageChange = (event: React.ChangeEvent<any>) => {
-    console.log(event.target.value);
+    const message = event.target.value;
+
+    setNewMessageButtonClass(message ? 'active' : '');
+    setNewMessage(message);
   };
 
   const handleUserMessageClick = () => {
-    console.log('handleUserMessageClick');
+    if(newMessage){
+      console.log('handleUserMessageClick');
+      setNewMessage('');
+    }
   };
 
   return (
@@ -118,8 +127,8 @@ const App: React.FC = () => {
         onClick={handleAppClasses}
         unreadMessagesCounter={unreadMessagesCounter}
       />
-      <Main onScroll={handleScroll} showedMessages={showedMessages} onUnreadMessage={handleOnUnreadMessages}/>
-      <Footer onChange={handleUserMessageChange} onClick={handleUserMessageClick} />
+      <Main onScroll={handleScroll} displayedMessages={displayedMessages} onUnreadMessage={handleOnUnreadMessages}/>
+      <Footer currentMessage={newMessage} onChangeMessage={handleUserMessageChange} buttonClass={newMessageButtonClass} onClickButton={handleUserMessageClick} />
     </div>
   );
 };
