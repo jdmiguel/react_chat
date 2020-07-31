@@ -8,20 +8,22 @@ interface IMainProps {
   onScroll: (event: React.UIEvent) => void;
   onUnreadMessage: () => void;
   displayedMessages: IDisplayedMessage[];
-};
+}
 
-const Main:React.FC<IMainProps> = ({onScroll, displayedMessages, onUnreadMessage}) => {
-  return(
-    <main onScroll={onScroll}>
+const Main = React.forwardRef<HTMLElement, IMainProps>(
+  ({ onScroll, displayedMessages, onUnreadMessage }, forwardedRef) => (
+    <main ref={forwardedRef} onScroll={onScroll}>
       <div>
-        {
-          displayedMessages.map(displayedMessage => (
-            <Message key={displayedMessage.id} data={displayedMessage} onUnreadMessage={onUnreadMessage}/>
-          ))
-        }
+        {displayedMessages.map((displayedMessage) => (
+          <Message
+            key={displayedMessage.id}
+            data={displayedMessage}
+            onUnreadMessage={onUnreadMessage}
+          />
+        ))}
       </div>
     </main>
-  )
-}
+  ),
+);
 
 export default Main;

@@ -19,13 +19,17 @@ const months = [
 const factorDate = 8;
 
 // app initial constants
-export const defaultTotalMessages = data.length;
 export const defaultAppClasses = ['app'];
 export enum defaultMessagesCounter {
   STARTER = 0,
-  MAX_DISPLAYED = 20,
+  MAX_DISPLAYED = 30,
+  TOTAL = data.length
 };
-export const factorScroll = 1.1;
+export enum defaultScrollValues {
+  factor = 1.1,
+  offsetX = 0,
+  offsetY = 100
+};
 
 export const getUnreadMessagesCounter = () => data.reduce((acc:number = 0, next:IMessage) => {
   if(next.direction === 'in' && next.status === 'received') {

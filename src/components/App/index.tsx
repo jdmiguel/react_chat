@@ -1,4 +1,5 @@
 import React, {
+  useRef,
   useReducer,
   Dispatch,
   useEffect,
@@ -11,84 +12,44 @@ import Main from '../Main';
 import Footer from '../Footer';
 
 import {
-  defaultTotalMessages,
   defaultAppClasses,
   defaultMessagesCounter,
-  factorScroll,
+  defaultScrollValues,
   getUnreadMessagesCounter,
   getDisplayedMessages,
   getFormattedMessages,
   getTimeNewMessage,
 } from '../../helpers/utils';
-import { IDisplayedMessage } from '../../helpers/types';
 
-interface AppClassesAction {
-  type: 'hide' | 'show';
-}
-interface DisplayedMessagesAction {
-  type: 'display';
-  messages: IDisplayedMessage[];
-}
+import {
+  IMessagesState,
+  TMessagesAction,
+  TAppClassesState,
+  IAppClassesAction,
+} from '../../helpers/types';
 
-interface AppendedNewMessagesAction {
-  type: 'append';
-  message: IDisplayedMessage;
-}
-
-const appClassesReducer = (state: string[], action: AppClassesAction) => {
-  switch (action.type) {
-    case 'hide':
-      return [...state, 'hide'];
-    case 'show':
-      return state.filter((appClass) => appClass !== 'hide');
-    default:
-      return state;
-  }
-};
-
-const displayedMessagesReducer = (
-  state: IDisplayedMessage[],
-  action: DisplayedMessagesAction,
-) => {
-  switch (action.type) {
-    case 'display':
-      return [...state, ...action.messages];
-    default:
-      return state;  
-  }
-};
-
-const AppendedNewMessagesReducer = (
-  state: IDisplayedMessage[],
-  action: AppendedNewMessagesAction,
-) => {
-  switch (action.type) {
-    case 'append':
-      return [...state, action.message];
-    default:
-      return state;  
-  }
-};
+import {
+  messagesReducer,
+  initialMessagesState,
+  appClassesReducer,
+} from './reducers';
 
 const App: React.FC = () => {
   // Reducers
-  const [appClasses, appClassesDispatch]: [
-    string[],
-    Dispatch<AppClassesAction>,
+  const [{displayed: displayedMessages}, messagesDispatch]: [
+    IMessagesState,
+    Dispatch<TMessagesAction>,
+  ] = useReducer(messagesReducer, initialMessagesState);
+  const [appClassesState, appClassesDispatch]: [
+    TAppClassesState,
+    Dispatch<IAppClassesAction>,
   ] = useReducer(appClassesReducer, defaultAppClasses);
 
-  const [displayedMessages, displayedMessagesDispatch]: [
-    IDisplayedMessage[],
-    Dispatch<DisplayedMessagesAction>,
-  ] = useReducer(displayedMessagesReducer, []);
-  
-  const [appendedNewMessages, appendedNewMessagesDispatch]: [
-    IDisplayedMessage[],
-    Dispatch<AppendedNewMessagesAction>,
-  ] = useReducer(AppendedNewMessagesReducer, []);
+    // Refs
+    const mainRef = useRef<any>();
 
   // States
-  const [totalMessages, setTotalMessages] = useState(defaultTotalMessages);
+  const [totalMessages, setTotalMessages] = useState(defaultMessagesCounter.TOTAL);
   const [displayedMessagesCounter, setDisplayedMessagesCounter] = useState(
     defaultMessagesCounter.STARTER,
   );
@@ -111,23 +72,28 @@ const App: React.FC = () => {
       displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED,
     );
 
-    displayedMessagesDispatch({ type: 'display', messages: formatedMessages });
+    if(displayedMessagesCounter > defaultMessagesCounter.TOTAL){
+      messagesDispatch({ type: 'append' });
+    } else {
+      messagesDispatch({ type: 'display', messages: formatedMessages });
+    }
+
   }, [displayedMessagesCounter]);
 
   // Handlers
   const handleAppClasses = useCallback(() => {
-    appClasses.includes('hide')
+    appClassesState.includes('hide')
       ? appClassesDispatch({ type: 'show' })
       : appClassesDispatch({ type: 'hide' });
-  }, [appClasses]);
+  }, [appClassesState]);
 
   const handleScroll = useCallback(
     (event: React.UIEvent) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
       const isScrollDownLimit =
-        scrollTop >= (scrollHeight - clientHeight) / factorScroll;
+        scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
       const isRetrievingDataAllowed =
-        displayedMessagesCounter < defaultTotalMessages;
+        displayedMessagesCounter < totalMessages;
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         setIsLoadingScroll(true);
@@ -136,11 +102,11 @@ const App: React.FC = () => {
         );
       }
     },
-    [displayedMessagesCounter, isLoadingOnScroll],
+    [displayedMessagesCounter, isLoadingOnScroll, totalMessages],
   );
 
   const handleOnUnreadMessages = () => {
-    setUnreadMessagesCounter(counter => counter - 1);
+    setUnreadMessagesCounter((counter) => counter - 1);
   };
 
   const handleChangeMessage = (event: React.ChangeEvent<any>) => {
@@ -155,31 +121,39 @@ const App: React.FC = () => {
       id: totalMessages + 1,
       text: message,
       isUnread: false,
-      messageClasses: '',
+      messageClasses: 'message',
       hasIcon: true,
       iconClasses: 'material-icons',
       iconName: 'done',
       date: getTimeNewMessage(),
     };
 
-    appendedNewMessagesDispatch({ type: 'append', message: messageData });
-    setTotalMessages(total => total + 1);
-  }
+    if(displayedMessagesCounter >= defaultMessagesCounter.TOTAL){
+      messagesDispatch({ type: 'attach', message: messageData});
+      mainRef.current.scrollBy(defaultScrollValues.offsetX, defaultScrollValues.offsetY)
+    } else {
+      messagesDispatch({ type: 'store', message: messageData });
+    }
+
+    setTotalMessages((total) => total + 1);
+  };
 
   const handleClickButton = () => {
     if (newMessage) {
       appendNewMessage(newMessage);
       setNewMessage('');
+      setNewMessageButtonClass('');
     }
   };
 
   return (
-    <div className={appClasses.join(' ')}>
+    <div className={appClassesState.join(' ')}>
       <Header
         onClick={handleAppClasses}
         unreadMessagesCounter={unreadMessagesCounter}
       />
       <Main
+        ref={mainRef}
         onScroll={handleScroll}
         displayedMessages={displayedMessages}
         onUnreadMessage={handleOnUnreadMessages}

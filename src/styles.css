@@ -72,7 +72,8 @@ h3 {
 
 main {
   height: 76vh;
-  overflow: auto;
+  overflow-y: auto;
+  overflow-x: hidden;
   background-color: #eef3f3; 
 }
 
@@ -103,6 +104,11 @@ main > div {
   align-self: flex-end;
   display: flex;
   flex-direction: column;
+  line-break: anywhere;
+}
+
+.message:last-of-type {
+  margin-bottom: 70px;
 }
 
 .message i {
@@ -233,7 +239,7 @@ textarea:focus {
   
   .app {
     width: 320px;
-    height: 686px;
+    height: 650px;
     position: fixed;
     bottom: 0;
     right: 25px;
@@ -243,7 +249,7 @@ textarea:focus {
   }
 
   .app.hide {
-    transform: translateY(625px);
+    transform: translateY(589px);
   }
 
   header {
@@ -263,7 +269,7 @@ textarea:focus {
   }
 
   main {
-    height: 530px;
+    height: 494px;
   }
 
   footer {
