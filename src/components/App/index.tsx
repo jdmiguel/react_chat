@@ -24,9 +24,7 @@ import {
 
 import {
   IMessagesState,
-  TMessagesAction,
-  TAppClassesState,
-  IAppClassesAction,
+  TAppClassesState
 } from '../../helpers/types';
 
 import {
@@ -35,8 +33,13 @@ import {
   appClassesReducer,
 } from './reducers';
 
+import { 
+  TMessagesAction, 
+  IAppClassesAction 
+}  from './actionTypes';
+
 const App: React.FC = () => {
-  // Reducers
+  // UseReducers
   const [{displayed: displayedMessages}, messagesDispatch]: [
     IMessagesState,
     Dispatch<TMessagesAction>,
@@ -46,17 +49,18 @@ const App: React.FC = () => {
     Dispatch<IAppClassesAction>,
   ] = useReducer(appClassesReducer, defaultAppClasses);
 
-    // Refs
-    const mainRef = useRef<any>();
+    // UseRefs
+  const mainRef = useRef<any>();
+  const totalMessages = useRef(defaultMessagesCounter.TOTAL);
 
-  // States
-  const [totalMessages, setTotalMessages] = useState(defaultMessagesCounter.TOTAL);
+  // UseStates
   const [displayedMessagesCounter, setDisplayedMessagesCounter] = useState(
     defaultMessagesCounter.STARTER,
   );
   const [unreadMessagesCounter, setUnreadMessagesCounter] = useState(
     getUnreadMessagesCounter(),
   );
+  const [areNewMessagesAppended, setAreNewMessagesAppended] = useState(false);
   const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
   const [newMessage, setNewMessage] = useState('');
   const [newMessageButtonClass, setNewMessageButtonClass] = useState('');
@@ -68,14 +72,15 @@ const App: React.FC = () => {
 
   useEffect(() => {
     if(displayedMessagesCounter > defaultMessagesCounter.TOTAL){
-      messagesDispatch({ type: 'append' });
+      messagesDispatch({ type: 'APPEND_NEW_MESSAGES' });
+      setAreNewMessagesAppended(true);
     } else {
       const messages = getDisplayedMessages(getFormattedMessages);
       const formatedMessages = messages(
         displayedMessagesCounter,
         displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED,
       );
-      messagesDispatch({ type: 'display', messages: formatedMessages });
+      messagesDispatch({ type: 'DISPLAY_MESSAGES', messages: formatedMessages });
     }
 
   }, [displayedMessagesCounter]);
@@ -83,8 +88,8 @@ const App: React.FC = () => {
   // Handlers
   const handleAppClasses = useCallback(() => {
     appClassesState.includes('hide')
-      ? appClassesDispatch({ type: 'show' })
-      : appClassesDispatch({ type: 'hide' });
+      ? appClassesDispatch({ type: 'SHOW' })
+      : appClassesDispatch({ type: 'HIDE' });
   }, [appClassesState]);
 
   const handleScroll = useCallback(
@@ -93,11 +98,11 @@ const App: React.FC = () => {
       const isScrollDownLimit =
         scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
       const isRetrievingDataAllowed =
-        displayedMessagesCounter < totalMessages;
+        displayedMessagesCounter < totalMessages.current && !areNewMessagesAppended;
       const currentDisplayedMessagesCounter = 
-        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED < totalMessages
+        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED < totalMessages.current
         ? displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED
-        : totalMessages;
+        : totalMessages.current;
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         setIsLoadingScroll(true);
@@ -106,7 +111,7 @@ const App: React.FC = () => {
         );
       }
     },
-    [displayedMessagesCounter, isLoadingOnScroll, totalMessages],
+    [displayedMessagesCounter, isLoadingOnScroll, areNewMessagesAppended],
   );
 
   const handleOnUnreadMessages = () => {
@@ -123,22 +128,19 @@ const App: React.FC = () => {
   const appendNewMessage = (message: string) => {
     const messageData = {
       ...defaultMessage,
-      id: totalMessages + 1,
+      id: totalMessages.current + 1,
       text: message,
       date: getTimeNewMessage(),
     };
 
     if(displayedMessagesCounter >= defaultMessagesCounter.TOTAL){
-      console.log('attach messageData: ', messageData)
-      setDisplayedMessagesCounter((total) => total + 1);
-      messagesDispatch({ type: 'attach', message: messageData});
+      messagesDispatch({ type: 'DISPLAY_NEW_MESSAGE', message: messageData});
       mainRef.current.scrollBy(defaultScrollValues.offsetX, defaultScrollValues.offsetY);
     } else {
-      console.log('store messageData: ', messageData)
-      messagesDispatch({ type: 'store', message: messageData });
+      messagesDispatch({ type: 'STORE_NEW_MESSAGE', message: messageData });
     }
 
-    setTotalMessages((total) => total + 1);
+    totalMessages.current++;
   };
 
   const handleClickButton = () => {

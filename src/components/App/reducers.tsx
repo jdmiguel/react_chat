@@ -1,8 +1,12 @@
+
+import { 
+  TMessagesAction, 
+  IAppClassesAction 
+} from './actionTypes';
+
 import {
   IMessagesState,
-  TMessagesAction,
   TAppClassesState,
-  IAppClassesAction,
 } from '../../helpers/types';
 
 // Messages
@@ -16,22 +20,22 @@ export const messagesReducer = (
   action: TMessagesAction,
 ): IMessagesState => {
   switch (action.type) {
-    case 'display':
+    case 'DISPLAY_MESSAGES':
       return {
         ...state,
         displayed: [...state.displayed, ...action.messages],
       };
-    case 'append':
+    case 'APPEND_NEW_MESSAGES':
       return {
         ...state,
         displayed: [...state.displayed, ...state.appended],
       };
-    case 'store':
+    case 'STORE_NEW_MESSAGE':
       return {
         ...state,
         appended: [...state.appended, action.message],
       };
-    case 'attach':
+    case 'DISPLAY_NEW_MESSAGE':
       return {
         ...state,
         displayed: [...state.displayed, action.message],
@@ -49,9 +53,9 @@ export const appClassesReducer = (
   action: IAppClassesAction,
 ) => {
   switch (action.type) {
-    case 'hide':
+    case 'HIDE':
       return [...state, 'hide'];
-    case 'show':
+    case 'SHOW':
       return state.filter((appClass) => appClass !== 'hide');
     default:
       throw new Error();
