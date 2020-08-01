@@ -11,7 +11,7 @@ const Footer:React.FC<IFooterProps> = ({currentMessage, onChangeMessage, buttonC
     <footer>
       <div className="footer-wrapper">
         <textarea value={currentMessage} placeholder="Send a message..." onChange={onChangeMessage}/>
-        <button className={buttonClass} type="button" onClick={onClickButton}>
+        <button data-testid="footer-button" className={buttonClass} type="button" onClick={onClickButton}>
           <i className="material-icons">
             send
           </i>

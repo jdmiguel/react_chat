@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: Footer should render 1`] = `
+<footer>
+  <div
+    class="footer-wrapper"
+  >
+    <textarea
+      placeholder="Send a message..."
+    />
+    <button
+      class=""
+      data-testid="footer-button"
+      type="button"
+    >
+      <i
+        class="material-icons"
+      >
+        send
+      </i>
+    </button>
+  </div>
+</footer>
+`;
