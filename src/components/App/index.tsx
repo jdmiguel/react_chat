@@ -18,6 +18,7 @@ import {
   getUnreadMessagesCounter,
   getDisplayedMessages,
   getFormattedMessages,
+  defaultMessage,
   getTimeNewMessage,
 } from '../../helpers/utils';
 
@@ -66,15 +67,14 @@ const App: React.FC = () => {
   }, [displayedMessages]);
 
   useEffect(() => {
-    const messages = getDisplayedMessages(getFormattedMessages);
-    const formatedMessages = messages(
-      displayedMessagesCounter,
-      displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED,
-    );
-
     if(displayedMessagesCounter > defaultMessagesCounter.TOTAL){
       messagesDispatch({ type: 'append' });
     } else {
+      const messages = getDisplayedMessages(getFormattedMessages);
+      const formatedMessages = messages(
+        displayedMessagesCounter,
+        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED,
+      );
       messagesDispatch({ type: 'display', messages: formatedMessages });
     }
 
@@ -94,11 +94,15 @@ const App: React.FC = () => {
         scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
       const isRetrievingDataAllowed =
         displayedMessagesCounter < totalMessages;
+      const currentDisplayedMessagesCounter = 
+        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED < totalMessages
+        ? displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED
+        : totalMessages;
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         setIsLoadingScroll(true);
         setDisplayedMessagesCounter(
-          displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED,
+          currentDisplayedMessagesCounter
         );
       }
     },
@@ -118,20 +122,19 @@ const App: React.FC = () => {
 
   const appendNewMessage = (message: string) => {
     const messageData = {
+      ...defaultMessage,
       id: totalMessages + 1,
       text: message,
-      isUnread: false,
-      messageClasses: 'message',
-      hasIcon: true,
-      iconClasses: 'material-icons',
-      iconName: 'done',
       date: getTimeNewMessage(),
     };
 
     if(displayedMessagesCounter >= defaultMessagesCounter.TOTAL){
+      console.log('attach messageData: ', messageData)
+      setDisplayedMessagesCounter((total) => total + 1);
       messagesDispatch({ type: 'attach', message: messageData});
-      mainRef.current.scrollBy(defaultScrollValues.offsetX, defaultScrollValues.offsetY)
+      mainRef.current.scrollBy(defaultScrollValues.offsetX, defaultScrollValues.offsetY);
     } else {
+      console.log('store messageData: ', messageData)
       messagesDispatch({ type: 'store', message: messageData });
     }
 

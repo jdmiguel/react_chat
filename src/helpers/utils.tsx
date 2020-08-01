@@ -30,6 +30,16 @@ export enum defaultScrollValues {
   offsetX = 0,
   offsetY = 100
 };
+export const defaultMessage = {
+  id: 0,
+  text: '',
+  isUnread: false,
+  messageClasses: 'message',
+  hasIcon: true,
+  iconClasses: 'material-icons',
+  iconName: 'done',
+  date: 0,
+};
 
 export const getUnreadMessagesCounter = () => data.reduce((acc:number = 0, next:IMessage) => {
   if(next.direction === 'in' && next.status === 'received') {
@@ -58,7 +68,7 @@ const getIconNameMessage = (type: string, status: string) =>
 
 const getDate = (date: Date) => {
   const hour = date.getHours() < 10 ? `0${date.getHours()}` : date.getHours();
-  const minutes = date.getMinutes();
+  const minutes = date.getMinutes() < 10 ? `0${date.getMinutes()}` : date.getMinutes();;
   const month = months.find(month => date.getMonth() === month.value)?.text;
   const day = date.getDate();
   const year = date.getFullYear();
