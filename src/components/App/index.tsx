@@ -54,6 +54,7 @@ const App: React.FC = () => {
   const totalMessages = useRef(defaultMessagesCounter.TOTAL);
   const renderedMessages = useRef(defaultMessagesCounter.MAX_DISPLAYED);
   const scrollDirection = useRef('down');
+  const asReadIdslist = useRef<number[]>([]);
 
   // UseStates
   const [displayedMessagesCounter, setDisplayedMessagesCounter] = useState(
@@ -112,9 +113,9 @@ const App: React.FC = () => {
   const handleScroll = useCallback(
     (event: React.UIEvent) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
-      const isScrollUpLimit = scrollTop <= 50;
       const isScrollDownLimit =
-        scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
+      scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
+      const isScrollUpLimit = scrollTop <= 200;
       const isRetrievingDataAllowed =
         displayedMessagesCounter < totalMessages.current && !areNewMessagesAppended;
       const addedDisplayedMessagesCounter = 
@@ -146,7 +147,11 @@ const App: React.FC = () => {
 
   const handleOnUnreadMessages = (id: number) => {
     messagesDispatch({ type: 'SET_AS_READ', id });
-    setUnreadMessagesCounter((counter) => counter - 1);
+
+    if(!asReadIdslist.current.includes(id)){
+      setUnreadMessagesCounter((counter) => counter - 1);
+    }
+    asReadIdslist.current = [...asReadIdslist.current, id];
   };
 
   const handleChangeMessage = (event: React.ChangeEvent<any>) => {

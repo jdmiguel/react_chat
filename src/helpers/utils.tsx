@@ -27,7 +27,7 @@ export enum defaultMessagesCounter {
   TOTAL = data.length
 };
 export enum defaultScrollValues {
-  factor = 1.1,
+  factor = 1.2,
   offsetX = 0,
   offsetY = 100
 };
