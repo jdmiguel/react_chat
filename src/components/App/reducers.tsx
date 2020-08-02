@@ -25,6 +25,15 @@ export const messagesReducer = (
         ...state,
         displayed: [...state.displayed, ...action.messages],
       };
+    case 'SET_AS_READ':
+      const displayedMessages = [...state.displayed];
+      const currentMessageId = displayedMessages.findIndex(message => message.id === action.id);
+      displayedMessages[currentMessageId].isUnread = false;
+
+      return {
+        ...state,
+        displayed: [...displayedMessages],
+      };  
     case 'APPEND_NEW_MESSAGES':
       return {
         ...state,

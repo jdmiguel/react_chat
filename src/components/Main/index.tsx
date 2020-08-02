@@ -6,7 +6,7 @@ import { IDisplayedMessage } from '../../helpers/types';
 
 interface IMainProps {
   onScroll: (event: React.UIEvent) => void;
-  onUnreadMessage: () => void;
+  onUnreadMessage: (id:number) => void;
   displayedMessages: IDisplayedMessage[];
 }
 

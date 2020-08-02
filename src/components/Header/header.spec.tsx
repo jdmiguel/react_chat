@@ -33,7 +33,7 @@ describe('Component: Header', () => {
     expect(stateText).toBe('Typing...');
   });
 
-  it('should call function onClick', () => {
+  it('should call onClick function', () => {
     const handleClick = jest.fn();
     const { container } = render(
       <Header {...HEADER_PROPS} onClick={handleClick}/>

@@ -113,7 +113,8 @@ const App: React.FC = () => {
     [displayedMessagesCounter, isLoadingOnScroll, areNewMessagesAppended],
   );
 
-  const handleOnUnreadMessages = () => {
+  const handleOnUnreadMessages = (id: number) => {
+    messagesDispatch({ type: 'SET_AS_READ', id });
     setUnreadMessagesCounter((counter) => counter - 1);
   };
 

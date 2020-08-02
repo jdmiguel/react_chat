@@ -7,6 +7,11 @@ export interface IMessagesDisplayMessagesAction {
   messages: IDisplayedMessage[];
 }
 
+export interface IMessagesSetAsReadAction {
+  type: 'SET_AS_READ';
+  id: number;
+}
+
 export interface IMessagesAppendMessagesAction {
   type: 'APPEND_NEW_MESSAGES';
 }
@@ -21,6 +26,7 @@ export interface IMessagesAttachMessageAction {
 
 export type TMessagesAction =
   | IMessagesDisplayMessagesAction
+  | IMessagesSetAsReadAction
   | IMessagesAppendMessagesAction
   | IMessagesStoreMessageAction
   | IMessagesAttachMessageAction;

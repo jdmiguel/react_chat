@@ -19,7 +19,7 @@ describe('Component: Footer', () => {
     expect(container.firstChild).toMatchSnapshot();
   });
 
-  it('should call function onClickButton', () => {
+  it('should call onClickButton function', () => {
     const handleClick = jest.fn();
     const { getByTestId } = render(
       <Footer {...FOOTER_PROPS} onClickButton={handleClick}/>
@@ -30,7 +30,7 @@ describe('Component: Footer', () => {
     expect(handleClick).toHaveBeenCalled();
   });
 
-  it('should call function onChangeMessage', () => {
+  it('should call onChangeMessage function', () => {
     const handleChange = jest.fn();
     const { getByPlaceholderText } = render(
       <Footer {...FOOTER_PROPS} onChangeMessage={handleChange}/>

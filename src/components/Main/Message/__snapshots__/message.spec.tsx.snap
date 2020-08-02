@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: Message should render as incoming message 1`] = `
+<div
+  class="message incoming"
+>
+  <div
+    class="message-content"
+  >
+    <p>
+      Hi
+    </p>
+  </div>
+  <div
+    class="message-time"
+  >
+    <p>
+      10:00 - April 12, 2020
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component: Message should render as outcoming message and as read 1`] = `
+<div
+  class=""
+>
+  <div
+    class="message-content"
+  >
+    <p>
+      Hi
+    </p>
+    <i
+      class="read"
+    >
+      done_all
+    </i>
+  </div>
+  <div
+    class="message-time"
+  >
+    <p>
+      10:00 - April 12, 2020
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component: Message should render as outcoming message and as received 1`] = `
+<div
+  class=""
+>
+  <div
+    class="message-content"
+  >
+    <p>
+      Hi
+    </p>
+    <i
+      class=""
+    >
+      done_all
+    </i>
+  </div>
+  <div
+    class="message-time"
+  >
+    <p>
+      10:00 - April 12, 2020
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component: Message should render as outcoming message and as sent 1`] = `
+<div
+  class=""
+>
+  <div
+    class="message-content"
+  >
+    <p>
+      Hi
+    </p>
+    <i
+      class=""
+    />
+  </div>
+  <div
+    class="message-time"
+  >
+    <p>
+      10:00 - April 12, 2020
+    </p>
+  </div>
+</div>
+`;
+
+exports[`Component: Message should render as outcoming message and display text properly 1`] = `
+<div
+  class=""
+>
+  <div
+    class="message-content"
+  >
+    <p>
+      Hi
+    </p>
+  </div>
+  <div
+    class="message-time"
+  >
+    <p>
+      10:00 - April 12, 2020
+    </p>
+  </div>
+</div>
+`;
