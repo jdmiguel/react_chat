@@ -75,7 +75,7 @@ h3 {
 }
 
 main {
-  height: 66vh;
+  height: 67vh;
   overflow-y: auto;
   overflow-x: hidden;
   background-color: #eef3f3;
@@ -149,7 +149,7 @@ main > div {
 
 footer {
   background-color: #34495E;
-  height: 12vh;
+  height: 13vh;
   display: flex;
 }
 
