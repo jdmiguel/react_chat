@@ -22,10 +22,7 @@ import {
   getTimeNewMessage,
 } from '../../helpers/utils';
 
-import {
-  IMessagesState,
-  TAppClassesState
-} from '../../helpers/types';
+import { IMessagesState, TAppClassesState } from '../../helpers/types';
 
 import {
   messagesReducer,
@@ -33,14 +30,11 @@ import {
   appClassesReducer,
 } from './reducers';
 
-import { 
-  TMessagesAction, 
-  IAppClassesAction 
-}  from './actionTypes';
+import { TMessagesAction, IAppClassesAction } from './actionTypes';
 
 const App: React.FC = () => {
   // UseReducers
-  const [{displayed: displayedMessages}, messagesDispatch]: [
+  const [{ displayed: displayedMessages }, messagesDispatch]: [
     IMessagesState,
     Dispatch<TMessagesAction>,
   ] = useReducer(messagesReducer, initialMessagesState);
@@ -49,7 +43,7 @@ const App: React.FC = () => {
     Dispatch<IAppClassesAction>,
   ] = useReducer(appClassesReducer, defaultAppClasses);
 
-    // UseRefs
+  // UseRefs
   const mainRef = useRef<any>();
   const totalMessages = useRef(defaultMessagesCounter.TOTAL);
   const renderedMessages = useRef(defaultMessagesCounter.MAX_DISPLAYED);
@@ -74,30 +68,29 @@ const App: React.FC = () => {
   }, [displayedMessages]);
 
   useEffect(() => {
-    if(displayedMessagesCounter > defaultMessagesCounter.TOTAL){
+    if (displayedMessagesCounter > defaultMessagesCounter.TOTAL) {
       messagesDispatch({ type: 'APPEND_NEW_MESSAGES' });
       setAreNewMessagesAppended(true);
     } else {
       const messages = getDisplayedMessages(getFormattedMessages);
-      const firstMessage = scrollDirection.current === 'down' 
-        ? displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED
-        : displayedMessagesCounter - defaultMessagesCounter.MAX_RENDERED;
+      const firstMessage =
+        scrollDirection.current === 'down'
+          ? displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED
+          : displayedMessagesCounter - defaultMessagesCounter.MAX_RENDERED;
 
-      const formatedMessages = messages(
-        firstMessage,
-        displayedMessagesCounter,
-      ); 
-      const shouldBeCropped = renderedMessages.current > defaultMessagesCounter.MAX_RENDERED;
+      const formatedMessages = messages(firstMessage, displayedMessagesCounter);
+      const shouldBeCropped =
+        renderedMessages.current > defaultMessagesCounter.MAX_RENDERED;
 
       messagesDispatch({
         type: 'DISPLAY_MESSAGES',
         messages: formatedMessages,
         shouldBeCropped,
         lastMessageDisplayedId: displayedMessagesCounter,
-        direction: scrollDirection.current
+        direction: scrollDirection.current,
       });
 
-      if(shouldBeCropped) {
+      if (shouldBeCropped) {
         renderedMessages.current = defaultMessagesCounter.MAX_RENDERED;
       }
     }
@@ -114,31 +107,34 @@ const App: React.FC = () => {
     (event: React.UIEvent) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
       const isScrollDownLimit =
-      scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
-      const isScrollUpLimit = scrollTop <= 200;
+        scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
+      const isScrollUpLimit = scrollTop <= defaultScrollValues.minHeightToLoad;
       const isRetrievingDataAllowed =
-        displayedMessagesCounter < totalMessages.current && !areNewMessagesAppended;
-      const addedDisplayedMessagesCounter = 
-        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED < totalMessages.current
-        ? displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED
-        : totalMessages.current;
-      const removedDisplayedMessagesCounter = displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED;  
+        displayedMessagesCounter < totalMessages.current &&
+        !areNewMessagesAppended;
+      const addedDisplayedMessagesCounter =
+        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED <
+        totalMessages.current
+          ? displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED
+          : totalMessages.current;
+      const removedDisplayedMessagesCounter =
+        displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED;
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         scrollDirection.current = 'down';
         setIsLoadingScroll(true);
-        setDisplayedMessagesCounter(
-          addedDisplayedMessagesCounter
-        );
+        setDisplayedMessagesCounter(addedDisplayedMessagesCounter);
         renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
       }
 
-      if (displayedMessagesCounter > 20 && !isLoadingOnScroll && isScrollUpLimit) {
+      if (
+        displayedMessagesCounter > defaultMessagesCounter.MAX_RENDERED &&
+        !isLoadingOnScroll &&
+        isScrollUpLimit
+      ) {
         scrollDirection.current = 'up';
         setIsLoadingScroll(true);
-        setDisplayedMessagesCounter(
-          removedDisplayedMessagesCounter
-        );
+        setDisplayedMessagesCounter(removedDisplayedMessagesCounter);
         renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
       }
     },
@@ -148,7 +144,7 @@ const App: React.FC = () => {
   const handleOnUnreadMessages = (id: number) => {
     messagesDispatch({ type: 'SET_AS_READ', id });
 
-    if(!asReadIdslist.current.includes(id)){
+    if (!asReadIdslist.current.includes(id)) {
       setUnreadMessagesCounter((counter) => counter - 1);
     }
     asReadIdslist.current = [...asReadIdslist.current, id];
@@ -160,23 +156,29 @@ const App: React.FC = () => {
     setNewMessage(message);
   };
 
-  const appendNewMessage = useCallback((message: string) => {
-    const messageData = {
-      ...defaultMessage,
-      id: totalMessages.current + 1,
-      text: message,
-      date: getTimeNewMessage(),
-    };
+  const appendNewMessage = useCallback(
+    (message: string) => {
+      const messageData = {
+        ...defaultMessage,
+        id: totalMessages.current + 1,
+        text: message,
+        date: getTimeNewMessage(),
+      };
 
-    if(displayedMessagesCounter >= defaultMessagesCounter.TOTAL){
-      messagesDispatch({ type: 'DISPLAY_NEW_MESSAGE', message: messageData});
-      mainRef.current.scrollBy(defaultScrollValues.offsetX, defaultScrollValues.offsetY);
-    } else {
-      messagesDispatch({ type: 'STORE_NEW_MESSAGE', message: messageData });
-    }
+      if (displayedMessagesCounter >= defaultMessagesCounter.TOTAL) {
+        messagesDispatch({ type: 'DISPLAY_NEW_MESSAGE', message: messageData });
+        mainRef.current.scrollBy(
+          defaultScrollValues.offsetX,
+          defaultScrollValues.offsetY,
+        );
+      } else {
+        messagesDispatch({ type: 'STORE_NEW_MESSAGE', message: messageData });
+      }
 
-    totalMessages.current++;
-  }, [displayedMessagesCounter]);
+      totalMessages.current++;
+    },
+    [displayedMessagesCounter],
+  );
 
   const handleClickButton = () => {
     appendNewMessage(newMessage);

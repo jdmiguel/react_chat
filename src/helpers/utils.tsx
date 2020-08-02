@@ -29,7 +29,8 @@ export enum defaultMessagesCounter {
 export enum defaultScrollValues {
   factor = 1.2,
   offsetX = 0,
-  offsetY = 100
+  offsetY = 100,
+  minHeightToLoad = 200
 };
 export const defaultMessage = {
   id: 0,
