@@ -52,10 +52,12 @@ const App: React.FC = () => {
     // UseRefs
   const mainRef = useRef<any>();
   const totalMessages = useRef(defaultMessagesCounter.TOTAL);
+  const renderedMessages = useRef(defaultMessagesCounter.MAX_DISPLAYED);
+  const scrollDirection = useRef('down');
 
   // UseStates
   const [displayedMessagesCounter, setDisplayedMessagesCounter] = useState(
-    defaultMessagesCounter.STARTER,
+    defaultMessagesCounter.MAX_DISPLAYED,
   );
   const [unreadMessagesCounter, setUnreadMessagesCounter] = useState(
     getUnreadMessagesCounter(),
@@ -65,6 +67,7 @@ const App: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
 
   // UseEffects
+
   useEffect(() => {
     setIsLoadingScroll(false);
   }, [displayedMessages]);
@@ -75,13 +78,28 @@ const App: React.FC = () => {
       setAreNewMessagesAppended(true);
     } else {
       const messages = getDisplayedMessages(getFormattedMessages);
-      const formatedMessages = messages(
-        displayedMessagesCounter,
-        displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED,
-      );
-      messagesDispatch({ type: 'DISPLAY_MESSAGES', messages: formatedMessages });
-    }
+      const firstMessage = scrollDirection.current === 'down' 
+        ? displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED
+        : displayedMessagesCounter - defaultMessagesCounter.MAX_RENDERED;
 
+      const formatedMessages = messages(
+        firstMessage,
+        displayedMessagesCounter,
+      ); 
+      const shouldBeCropped = renderedMessages.current > defaultMessagesCounter.MAX_RENDERED;
+
+      messagesDispatch({
+        type: 'DISPLAY_MESSAGES',
+        messages: formatedMessages,
+        shouldBeCropped,
+        lastMessageDisplayedId: displayedMessagesCounter,
+        direction: scrollDirection.current
+      });
+
+      if(shouldBeCropped) {
+        renderedMessages.current = defaultMessagesCounter.MAX_RENDERED;
+      }
+    }
   }, [displayedMessagesCounter]);
 
   // Handlers
@@ -94,20 +112,33 @@ const App: React.FC = () => {
   const handleScroll = useCallback(
     (event: React.UIEvent) => {
       const { scrollTop, scrollHeight, clientHeight } = event.currentTarget;
+      const isScrollUpLimit = scrollTop <= 50;
       const isScrollDownLimit =
         scrollTop >= (scrollHeight - clientHeight) / defaultScrollValues.factor;
       const isRetrievingDataAllowed =
         displayedMessagesCounter < totalMessages.current && !areNewMessagesAppended;
-      const currentDisplayedMessagesCounter = 
+      const addedDisplayedMessagesCounter = 
         displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED < totalMessages.current
         ? displayedMessagesCounter + defaultMessagesCounter.MAX_DISPLAYED
         : totalMessages.current;
+      const removedDisplayedMessagesCounter = displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED;  
 
       if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
+        scrollDirection.current = 'down';
         setIsLoadingScroll(true);
         setDisplayedMessagesCounter(
-          currentDisplayedMessagesCounter
+          addedDisplayedMessagesCounter
         );
+        renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
+      }
+
+      if (displayedMessagesCounter > 20 && !isLoadingOnScroll && isScrollUpLimit) {
+        scrollDirection.current = 'up';
+        setIsLoadingScroll(true);
+        setDisplayedMessagesCounter(
+          removedDisplayedMessagesCounter
+        );
+        renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
       }
     },
     [displayedMessagesCounter, isLoadingOnScroll, areNewMessagesAppended],
@@ -124,7 +155,7 @@ const App: React.FC = () => {
     setNewMessage(message);
   };
 
-  const appendNewMessage = (message: string) => {
+  const appendNewMessage = useCallback((message: string) => {
     const messageData = {
       ...defaultMessage,
       id: totalMessages.current + 1,
@@ -140,7 +171,7 @@ const App: React.FC = () => {
     }
 
     totalMessages.current++;
-  };
+  }, [displayedMessagesCounter]);
 
   const handleClickButton = () => {
     appendNewMessage(newMessage);

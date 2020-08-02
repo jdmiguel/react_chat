@@ -5,6 +5,9 @@ import { IDisplayedMessage } from '../../helpers/types';
 export interface IMessagesDisplayMessagesAction {
   type: 'DISPLAY_MESSAGES';
   messages: IDisplayedMessage[];
+  shouldBeCropped: boolean;
+  lastMessageDisplayedId: number;
+  direction: string;
 }
 
 export interface IMessagesSetAsReadAction {

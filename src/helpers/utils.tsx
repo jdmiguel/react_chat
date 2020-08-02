@@ -22,7 +22,8 @@ const factorDate = 8;
 export const defaultAppClasses = ['app'];
 export enum defaultMessagesCounter {
   STARTER = 0,
-  MAX_DISPLAYED = 20,
+  MAX_DISPLAYED = 10,
+  MAX_RENDERED = 20,
   TOTAL = data.length
 };
 export enum defaultScrollValues {
