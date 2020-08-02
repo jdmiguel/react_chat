@@ -6,8 +6,7 @@ import Footer from '.';
 const FOOTER_PROPS = {
   currentMessage: '',
   onClickButton: () => {},
-  onChangeMessage: () => {},
-  buttonClass: '',
+  onChangeMessage: () => {}
 };
 
 describe('Component: Footer', () => {

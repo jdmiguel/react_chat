@@ -63,7 +63,6 @@ const App: React.FC = () => {
   const [areNewMessagesAppended, setAreNewMessagesAppended] = useState(false);
   const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
   const [newMessage, setNewMessage] = useState('');
-  const [newMessageButtonClass, setNewMessageButtonClass] = useState('');
 
   // UseEffects
   useEffect(() => {
@@ -121,7 +120,6 @@ const App: React.FC = () => {
   const handleChangeMessage = (event: React.ChangeEvent<any>) => {
     const message = event.target.value;
 
-    setNewMessageButtonClass(message ? 'active' : '');
     setNewMessage(message);
   };
 
@@ -144,11 +142,8 @@ const App: React.FC = () => {
   };
 
   const handleClickButton = () => {
-    if (newMessage) {
-      appendNewMessage(newMessage);
-      setNewMessage('');
-      setNewMessageButtonClass('');
-    }
+    appendNewMessage(newMessage);
+    setNewMessage('');
   };
 
   return (
@@ -166,7 +161,6 @@ const App: React.FC = () => {
       <Footer
         currentMessage={newMessage}
         onChangeMessage={handleChangeMessage}
-        buttonClass={newMessageButtonClass}
         onClickButton={handleClickButton}
       />
     </div>
