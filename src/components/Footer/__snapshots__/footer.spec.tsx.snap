@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Component: Footer should render 1`] = `
+exports[`Component: Footer should render and display deactive button 1`] = `
 <footer>
   <div
     class="footer-wrapper"

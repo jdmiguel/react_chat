@@ -10,11 +10,12 @@ const FOOTER_PROPS = {
 };
 
 describe('Component: Footer', () => {
-  it('should render', () => {
-    const { container } = render(
+  it('should render and display deactive button', () => {
+    const { container, getByTestId } = render(
       <Footer {...FOOTER_PROPS} />
     );
 
+    expect(getByTestId('footer-button')).not.toHaveClass('active');
     expect(container.firstChild).toMatchSnapshot();
   });
 
@@ -37,5 +38,13 @@ describe('Component: Footer', () => {
 
     fireEvent.change(getByPlaceholderText('Send a message...'), { target: { value: 'hi' } });
     expect(handleChange).toHaveBeenCalled();
+  });
+
+  it('should button be active', async () => {
+    const { getByTestId } = render(
+      <Footer {...FOOTER_PROPS} currentMessage="hi"/>
+    );
+
+    expect(getByTestId('footer-button')).toHaveClass('active');
   });
 });
