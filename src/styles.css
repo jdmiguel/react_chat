@@ -78,7 +78,8 @@ main {
   height: 76vh;
   overflow-y: auto;
   overflow-x: hidden;
-  background-color: #eef3f3; 
+  background-color: #eef3f3;
+  scroll-behavior: smooth; 
 }
 
 main::-webkit-scrollbar {
