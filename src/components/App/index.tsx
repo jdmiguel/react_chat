@@ -151,6 +151,7 @@ const App: React.FC = () => {
       <Header
         onClick={handleAppClasses}
         unreadMessagesCounter={unreadMessagesCounter}
+        isTyping={!!newMessage}
       />
       <Main
         ref={mainRef}

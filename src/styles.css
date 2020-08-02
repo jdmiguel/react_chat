@@ -65,6 +65,10 @@ h2 {
   font-size: 0.8rem;
 }
 
+h2.typing {
+  font-style: italic;
+}
+
 h3 {
   font-size: 0.85rem;
   color: #5edfc3;
@@ -239,7 +243,7 @@ textarea:focus {
   
   .app {
     width: 320px;
-    height: 650px;
+    height: 567px;
     position: fixed;
     bottom: 0;
     right: 25px;
@@ -249,7 +253,7 @@ textarea:focus {
   }
 
   .app.hide {
-    transform: translateY(589px);
+    transform: translateY(506px);
   }
 
   header {
@@ -269,7 +273,7 @@ textarea:focus {
   }
 
   main {
-    height: 494px;
+    height: 421px;
   }
 
   footer {

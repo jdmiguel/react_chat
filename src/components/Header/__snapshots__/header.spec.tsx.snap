@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Component: Header should render and display Online text 1`] = `
+<header>
+  <button
+    type="button"
+  />
+  <div
+    class="header-profile"
+  >
+    <i
+      class="material-icons"
+    >
+      account_circle
+    </i>
+    <div>
+      <h1>
+        Ipresence User
+      </h1>
+      <h2
+        class=""
+      >
+        Online
+      </h2>
+    </div>
+  </div>
+  <div>
+    <h3>
+      10 new messages
+    </h3>
+  </div>
+</header>
+`;
