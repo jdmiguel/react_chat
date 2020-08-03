@@ -1,7 +1,9 @@
 import React from 'react';
 
+// Components
 import Message from './Message';
 
+// Helpers
 import { IDisplayedMessage } from '../../helpers/types';
 
 interface IMainProps {

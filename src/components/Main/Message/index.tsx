@@ -1,7 +1,8 @@
 import React from 'react';
 import { InView } from 'react-intersection-observer';
 
-import { observerOptions } from '../../../helpers/utils';
+// Helpers
+import { observerOptions } from '../../../helpers/constants';
 import { IDisplayedMessage } from '../../../helpers/types';
 
 interface IMessageProps {

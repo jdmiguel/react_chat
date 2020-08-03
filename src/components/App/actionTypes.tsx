@@ -1,7 +1,6 @@
-// Messages
-
 import { IDisplayedMessage } from '../../helpers/types';
 
+// Messages
 export interface IMessagesDisplayMessagesAction {
   type: 'DISPLAY_MESSAGES';
   messages: IDisplayedMessage[];
@@ -14,7 +13,6 @@ export interface IMessagesSetAsReadAction {
   type: 'SET_AS_READ';
   id: number;
 }
-
 export interface IMessagesAppendMessagesAction {
   type: 'APPEND_NEW_MESSAGES';
 }
@@ -35,7 +33,6 @@ export type TMessagesAction =
   | IMessagesAttachMessageAction;
 
 // AppClasses
-
 export interface IAppClassesAction {
   type: 'HIDE' | 'SHOW';
 }

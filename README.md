@@ -1,44 +1,58 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## I-PRESENCE CHAT REACT APPLICATION 
 
-## Available Scripts
+### TECHNOLOGIES
 
-In the project directory, you can run:
+- **CREATE-REACT-APP**
+- **YARN**
+- **REACT HOOKS**
+- **TYPESCRIPT**
+- **CSS**
+- **REACT-INTERSECTION-OBSERVER**
+- **JEST**
+- **REACT-TESTING-LIBRARY**
 
-### `yarn start`
+### DEVELOPMENT
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+First, I used CREATE-REACT-APP as build tool with YARN. For development, I mainly used REACT with TYPESCRIPT.
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Regarding styles, I directly utilized CSS.
 
-### `yarn test`
+These are the created components:
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- *App*: It handles the logic of the application by getting the data from the json file and displaying it as messages (regarding to the applied scroll by the user). Furthemore, it is in charge creating new messages, setting as read the unread messages (when they are displayed) and showing/hiding the chat by clicking on the header one (desktop feature).
+- *Header*: This component shows the user name and its state (it could be either online or typing while user is typing a new message). In addition to, it displays the new messages counter (incoming and unread ones) which will be update when these messages are displayed.
+- *Main*: It is in charge of showing the rendered messages by using the data props from App.
+- *Message*: It displays the message data received from Main. Also, it uses the intersection observer API (with React Intersection
+Observer) to notify that it has been displayed to its parent component.
+- *Footer*: This one allows to the user writting and sending new messages. It includes a feature to enable / disable button regarding a new message has been typed or not.
 
-### `yarn build`
+To enhance the readability of the App code, I splitted it in several files by isolating the reducers, actionTypes and pure functions used.
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Finally, I added a Helpers folder that includes two files:
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+- *Types*: The used types.
+- *Constants*: Default values.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### PERFORMANCE
 
-### `yarn eject`
+In order to improve the performance of the application, I did the following:
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- Due to the huge amount messages to load (500 messages from the json file), I decided to apply a lazy load of these messages by scroll
+and render a limited number of these ones (20). It was the most complicated part to develop but I considered doing this as neccesary to get a good perfomance, specially in mobile devices. 
+- I made the most of the UseCallback hook to improve the performace by memoizing some values...
+- Nevertheless, to deal with the displayed messages on the App component, I used the UseReducer hook because of the complexity to handle
+the state related to the mentioned messages.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### TESTING
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+I added unit tests to Footer, Header, Main and Message components with JEST and REACT-TESTING-LIBRARY.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### DEVICES
 
-## Learn More
+I have successfully tested this application on Chrome and Firefox browsers (Desktop) and Chrome browser (Android).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### PRODUCTION
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+To deploy this application and put it online, I used NETLIFY.
+
+

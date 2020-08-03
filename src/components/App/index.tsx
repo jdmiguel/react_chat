@@ -7,29 +7,32 @@ import React, {
   useCallback,
 } from 'react';
 
+// Components
 import Header from '../Header';
 import Main from '../Main';
 import Footer from '../Footer';
 
+// Helpers
 import {
-  defaultAppClasses,
   defaultMessagesCounter,
   defaultScrollValues,
-  getUnreadMessagesCounter,
-  getDisplayedMessages,
-  getFormattedMessages,
   defaultMessage,
-  getTimeNewMessage,
-} from '../../helpers/utils';
-
+} from '../../helpers/constants';
 import { IMessagesState, TAppClassesState } from '../../helpers/types';
 
+// Utils, reducers and actionTypes
 import {
-  messagesReducer,
+  getDisplayedMessages,
+  getFormattedMessages,
+  getUnreadMessagesCounter,
+  getDate,
+} from './utils';
+import {
   initialMessagesState,
+  messagesReducer,
+  initialAppClassesState,
   appClassesReducer,
 } from './reducers';
-
 import { TMessagesAction, IAppClassesAction } from './actionTypes';
 
 const App: React.FC = () => {
@@ -41,7 +44,7 @@ const App: React.FC = () => {
   const [appClassesState, appClassesDispatch]: [
     TAppClassesState,
     Dispatch<IAppClassesAction>,
-  ] = useReducer(appClassesReducer, defaultAppClasses);
+  ] = useReducer(appClassesReducer, initialAppClassesState);
 
   // UseRefs
   const mainRef = useRef<any>();
@@ -62,7 +65,6 @@ const App: React.FC = () => {
   const [newMessage, setNewMessage] = useState('');
 
   // UseEffects
-
   useEffect(() => {
     setIsLoadingScroll(false);
   }, [displayedMessages]);
@@ -162,7 +164,7 @@ const App: React.FC = () => {
         ...defaultMessage,
         id: totalMessages.current + 1,
         text: message,
-        date: getTimeNewMessage(),
+        date: getDate(new Date()),
       };
 
       if (displayedMessagesCounter >= defaultMessagesCounter.TOTAL) {

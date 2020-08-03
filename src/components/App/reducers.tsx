@@ -1,8 +1,9 @@
+// ActionTypes
 import { TMessagesAction, IAppClassesAction } from './actionTypes';
 
+// Helpers
 import { IMessagesState, TAppClassesState } from '../../helpers/types';
-
-import { defaultMessagesCounter } from '../../helpers/utils';
+import { defaultMessagesCounter } from '../../helpers/constants';
 
 // Messages
 export const initialMessagesState: IMessagesState = {
@@ -76,6 +77,8 @@ export const messagesReducer = (
 };
 
 // AppClasses
+export const initialAppClassesState = ['app'];
+
 export const appClassesReducer = (
   state: TAppClassesState,
   action: IAppClassesAction,
