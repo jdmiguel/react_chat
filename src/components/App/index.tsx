@@ -132,7 +132,8 @@ const App: React.FC = () => {
       if (
         displayedMessagesCounter > defaultMessagesCounter.MAX_RENDERED &&
         !isLoadingOnScroll &&
-        isScrollUpLimit
+        isScrollUpLimit && 
+        isRetrievingDataAllowed
       ) {
         scrollDirection.current = 'up';
         setIsLoadingScroll(true);
