@@ -182,10 +182,12 @@ const App: React.FC = () => {
     [displayedMessagesCounter],
   );
 
-  const handleClickButton = () => {
-    appendNewMessage(newMessage);
-    setNewMessage('');
-  };
+  const handleClickButton = useCallback(() => {
+    if(newMessage){
+      setNewMessage('');
+      appendNewMessage(newMessage);
+    }
+  },[appendNewMessage, newMessage]);
 
   return (
     <div className={appClassesState.join(' ')}>
