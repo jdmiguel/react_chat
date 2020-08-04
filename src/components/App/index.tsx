@@ -161,9 +161,11 @@ const App: React.FC = () => {
 
   const appendNewMessage = useCallback(
     (message: string) => {
+      totalMessages.current += 1;
+
       const messageData = {
         ...defaultMessage,
-        id: totalMessages.current + 1,
+        id: totalMessages.current,
         text: message,
         date: getDate(new Date()),
       };
@@ -177,8 +179,7 @@ const App: React.FC = () => {
       } else {
         messagesDispatch({ type: 'STORE_NEW_MESSAGE', message: messageData });
       }
-
-      totalMessages.current++;
+      
     },
     [displayedMessagesCounter],
   );
