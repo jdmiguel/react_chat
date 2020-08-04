@@ -5,7 +5,6 @@ export interface IMessagesDisplayMessagesAction {
   type: 'DISPLAY_MESSAGES';
   messages: IDisplayedMessage[];
   shouldBeCropped: boolean;
-  lastMessageDisplayedId: number;
   direction: string;
 }
 

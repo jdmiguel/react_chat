@@ -61,14 +61,9 @@ const App: React.FC = () => {
     getUnreadMessagesCounter(),
   );
   const [areNewMessagesAppended, setAreNewMessagesAppended] = useState(false);
-  const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
   const [newMessage, setNewMessage] = useState('');
 
   // UseEffects
-  useEffect(() => {
-    setIsLoadingScroll(false);
-  }, [displayedMessages]);
-
   useEffect(() => {
     if (displayedMessagesCounter > defaultMessagesCounter.TOTAL) {
       messagesDispatch({ type: 'APPEND_NEW_MESSAGES' });
@@ -88,7 +83,6 @@ const App: React.FC = () => {
         type: 'DISPLAY_MESSAGES',
         messages: formatedMessages,
         shouldBeCropped,
-        lastMessageDisplayedId: displayedMessagesCounter,
         direction: scrollDirection.current,
       });
 
@@ -122,26 +116,22 @@ const App: React.FC = () => {
       const removedDisplayedMessagesCounter =
         displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED;
 
-      if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
+      if (isScrollDownLimit && isRetrievingDataAllowed) {
         scrollDirection.current = 'down';
-        setIsLoadingScroll(true);
-        setDisplayedMessagesCounter(addedDisplayedMessagesCounter);
         renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
+        setDisplayedMessagesCounter(addedDisplayedMessagesCounter);
       }
 
       if (
-        displayedMessagesCounter > defaultMessagesCounter.MAX_RENDERED &&
-        !isLoadingOnScroll &&
-        isScrollUpLimit && 
-        isRetrievingDataAllowed
+        displayedMessagesCounter > defaultMessagesCounter.MAX_RENDERED
+        && isScrollUpLimit && isRetrievingDataAllowed
       ) {
         scrollDirection.current = 'up';
-        setIsLoadingScroll(true);
-        setDisplayedMessagesCounter(removedDisplayedMessagesCounter);
         renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
+        setDisplayedMessagesCounter(removedDisplayedMessagesCounter);
       }
     },
-    [displayedMessagesCounter, isLoadingOnScroll, areNewMessagesAppended],
+    [displayedMessagesCounter, areNewMessagesAppended],
   );
 
   const handleOnUnreadMessages = (id: number) => {
