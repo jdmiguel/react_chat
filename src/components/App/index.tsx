@@ -61,9 +61,14 @@ const App: React.FC = () => {
     getUnreadMessagesCounter(),
   );
   const [areNewMessagesAppended, setAreNewMessagesAppended] = useState(false);
+  const [isLoadingOnScroll, setIsLoadingScroll] = useState(false);
   const [newMessage, setNewMessage] = useState('');
 
   // UseEffects
+  useEffect(() => {
+    setIsLoadingScroll(false);
+  }, [displayedMessages]);
+
   useEffect(() => {
     if (displayedMessagesCounter > defaultMessagesCounter.TOTAL) {
       messagesDispatch({ type: 'APPEND_NEW_MESSAGES' });
@@ -116,22 +121,26 @@ const App: React.FC = () => {
       const removedDisplayedMessagesCounter =
         displayedMessagesCounter - defaultMessagesCounter.MAX_DISPLAYED;
 
-      if (isScrollDownLimit && isRetrievingDataAllowed) {
+      if (!isLoadingOnScroll && isScrollDownLimit && isRetrievingDataAllowed) {
         scrollDirection.current = 'down';
         renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
+        setIsLoadingScroll(true);
         setDisplayedMessagesCounter(addedDisplayedMessagesCounter);
       }
 
       if (
-        displayedMessagesCounter > defaultMessagesCounter.MAX_RENDERED
-        && isScrollUpLimit && isRetrievingDataAllowed
+        displayedMessagesCounter > defaultMessagesCounter.MAX_RENDERED &&
+        !isLoadingOnScroll &&
+        isScrollUpLimit &&
+        isRetrievingDataAllowed
       ) {
         scrollDirection.current = 'up';
         renderedMessages.current += defaultMessagesCounter.MAX_DISPLAYED;
+        setIsLoadingScroll(true);
         setDisplayedMessagesCounter(removedDisplayedMessagesCounter);
       }
     },
-    [displayedMessagesCounter, areNewMessagesAppended],
+    [displayedMessagesCounter, isLoadingOnScroll, areNewMessagesAppended],
   );
 
   const handleOnUnreadMessages = (id: number) => {
@@ -169,17 +178,16 @@ const App: React.FC = () => {
       } else {
         messagesDispatch({ type: 'STORE_NEW_MESSAGE', message: messageData });
       }
-      
     },
     [displayedMessagesCounter],
   );
 
   const handleClickButton = useCallback(() => {
-    if(newMessage){
+    if (newMessage) {
       setNewMessage('');
       appendNewMessage(newMessage);
     }
-  },[appendNewMessage, newMessage]);
+  }, [appendNewMessage, newMessage]);
 
   return (
     <div className={appClassesState.join(' ')}>
